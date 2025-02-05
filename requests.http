@@ -1,0 +1,19 @@
+###
+
+POST http://localhost:3001/
+Content-Type: application/json
+
+{
+    "event": "confirm-appointment",
+    "patientId": "21",
+    "data": {
+        "name": "Enzo Doe",
+        "phone": "1234567890",
+        "age": 19,
+        "gender": "M",
+        "date": "2020-01-01",
+        "time": "10:00"
+    }
+}
+
+###

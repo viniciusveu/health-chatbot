@@ -1,0 +1,69 @@
+services:
+  chatbot:
+    container_name: chatbot
+    build:
+      context: .
+      dockerfile: ./apps/chatbot/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - chatbot-net
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    depends_on:
+      - rabbitmq
+
+  event-worker:
+    container_name: event-worker
+    build:
+      context: .
+      dockerfile: ./apps/event-worker/Dockerfile
+    environment:
+      - NODE_ENV=development
+    networks:
+      - chatbot-net
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    depends_on:
+      - rabbitmq
+
+  message-worker:
+    container_name: message-worker
+    build:
+      context: .
+      dockerfile: ./apps/message-worker/Dockerfile
+    environment:
+      - NODE_ENV=development
+    networks:
+      - chatbot-net
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - chatbot-net
+
+networks:
+  chatbot-net:
+    driver: bridge

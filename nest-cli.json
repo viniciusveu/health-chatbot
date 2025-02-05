@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/chatbot/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/chatbot/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/chatbot",
+  "projects": {
+    "chatbot": {
+      "type": "application",
+      "root": "apps/chatbot",
+      "entryFile": "main",
+      "sourceRoot": "apps/chatbot/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/chatbot/tsconfig.app.json"
+      }
+    },
+    "event-worker": {
+      "type": "application",
+      "root": "apps/event-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/event-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/event-worker/tsconfig.app.json"
+      }
+    },
+    "message-worker": {
+      "type": "application",
+      "root": "apps/message-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/message-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/message-worker/tsconfig.app.json"
+      }
+    }
+  }
+}
