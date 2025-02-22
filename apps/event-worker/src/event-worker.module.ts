@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { EventWorkerController } from './event-worker.controller';
 import { EventWorkerService } from './event-worker.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', 'apps/event-worker/.env'],
+    }),
     ClientsModule.register([
       {
         name: 'EVENT_WORKER',
@@ -17,7 +22,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           }
         },
       }
-    ])
+    ]),
   ],
   controllers: [EventWorkerController],
   providers: [EventWorkerService],

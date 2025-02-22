@@ -1,3 +1,5 @@
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+
 // todo remove this enum and use the one from the shared lib
 export enum EventType {
     APPOINTMENT_CREATED = 'appointment-created',             // Notify the patient about the appointment
@@ -14,7 +16,12 @@ export enum EventType {
 }
 
 export class EventDataDto {
-    event: string;
+    @IsEnum(EventType)
+    event?: EventType;
+
+    @IsString()
     patientId: string;
+
+    @IsNotEmpty()
     data: any;
 }
