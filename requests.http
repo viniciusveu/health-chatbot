@@ -4,6 +4,24 @@ POST http://localhost:3001/
 Content-Type: application/json
 
 {
+    "event": "appointment-created",
+    "patientId": "67",
+    "data": {
+        "name": "Marcio Doe",
+        "phone": "1234567890",
+        "age": 79,
+        "gender": "M",
+        "date": "2025-04-01",
+        "time": "10:00"
+    }
+}
+
+###
+
+POST http://localhost:3001/
+Content-Type: application/json
+
+{
     "event": "confirm-appointment",
     "patientId": "21",
     "data": {
@@ -11,7 +29,7 @@ Content-Type: application/json
         "phone": "1234567890",
         "age": 19,
         "gender": "M",
-        "date": "2020-01-01",
+        "date": "2025-04-01",
         "time": "10:00"
     }
 }

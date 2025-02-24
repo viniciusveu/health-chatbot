@@ -2,9 +2,15 @@ import { Module } from '@nestjs/common';
 import { ChatbotController } from './chatbot.controller';
 import { ChatbotService } from './chatbot.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
+import { GenAIApi } from './genai-api.provider';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', 'apps/chatbot/.env'],
+    }),
     ClientsModule.register([
       {
         name: 'MESSAGE_WORKER',
@@ -20,6 +26,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ])
   ],
   controllers: [ChatbotController],
-  providers: [ChatbotService],
+  providers: [ChatbotService, GenAIApi],
 })
-export class ChatbotModule {}
+export class ChatbotModule { }
