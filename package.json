@@ -78,7 +78,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/logging(|/.*)$": "<rootDir>/libs/logging/src/$1"
+      "^@app/logging(|/.*)$": "<rootDir>/libs/logging/src/$1",
+      "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   }
 }

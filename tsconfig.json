@@ -23,6 +23,12 @@
       ],
       "@app/logging/*": [
         "libs/logging/src/*"
+      ],
+      "@app/shared": [
+        "libs/shared/src"
+      ],
+      "@app/shared/*": [
+        "libs/shared/src/*"
       ]
     }
   }

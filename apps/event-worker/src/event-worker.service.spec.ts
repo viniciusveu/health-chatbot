@@ -1,6 +1,7 @@
 import { ClientProxy } from '@nestjs/microservices';
-import { EventDataDto, EventType } from './dtos/event-data.dto';
+import { EventDataDto } from './dtos/event-data.dto';
 import { EventWorkerService } from './event-worker.service';
+import { ContextOptions } from '@app/shared';
 
 describe('EventWorkerService', () => {
   let eventWorkerService: EventWorkerService;
@@ -17,7 +18,7 @@ describe('EventWorkerService', () => {
   describe('emitEvent', () => {
     it('should emit event', () => {
       let data = {
-        event: EventType.APPOINTMENT_CREATED,
+        event: ContextOptions.APPOINTMENT_CREATED,
         patientId: '123',
         data: {}
       }
@@ -44,7 +45,7 @@ describe('EventWorkerService', () => {
 
     it('should throw error when error while emitting event', () => {
       let data = new EventDataDto();
-      data.event = EventType.APPOINTMENT_CREATED;
+      data.event = ContextOptions.APPOINTMENT_CREATED;
 
       (rabbitClient.emit as jest.Mock).mockImplementation(() => {
         throw new Error('Error while emitting event');
