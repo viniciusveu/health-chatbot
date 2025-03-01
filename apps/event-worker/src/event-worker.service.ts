@@ -1,6 +1,6 @@
+import { EventDataDto } from '@app/shared/dtos';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { EventDataDto } from './dtos/event-data.dto';
 
 @Injectable()
 export class EventWorkerService {
@@ -15,8 +15,6 @@ export class EventWorkerService {
     if (!event) {
       throw new Error('Event is null or undefined');
     }
-
-    delete data.event;
 
     try {
       this.rabbitClient.emit(event, data);

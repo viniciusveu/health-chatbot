@@ -1,7 +1,7 @@
 import { ClientProxy } from '@nestjs/microservices';
-import { EventDataDto } from './dtos/event-data.dto';
 import { EventWorkerService } from './event-worker.service';
-import { ContextOptions } from '@app/shared';
+import { ContextOptions } from '@app/shared/enums';
+import { EventDataDto } from '@app/shared/dtos';
 
 describe('EventWorkerService', () => {
   let eventWorkerService: EventWorkerService;
@@ -20,7 +20,7 @@ describe('EventWorkerService', () => {
       let data = {
         event: ContextOptions.APPOINTMENT_CREATED,
         patientId: '123',
-        data: {}
+        appointmentId: '456',
       }
       let event = data.event;
 

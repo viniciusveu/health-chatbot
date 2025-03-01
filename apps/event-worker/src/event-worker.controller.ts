@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EventWorkerService } from './event-worker.service';
-import { EventDataDto } from './dtos/event-data.dto';
+import { EventDataDto } from '@app/shared/dtos';
 
 @Controller()
 export class EventWorkerController {

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventWorkerController } from './event-worker.controller';
 import { EventWorkerService } from './event-worker.service';
-import { EventDataDto } from './dtos/event-data.dto';
+import { EventDataDto } from '@app/shared/dtos';
 
 describe('EventWorkerController', () => {
   let eventWorkerController: EventWorkerController;

@@ -1,25 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { ChatbotService } from './chatbot.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ContextOptions, PatientData } from '@app/shared';
-
-interface ConfirmAppointmentDto {
-  patientId: string;
-  data: PatientData;
-}
+import { ContextOptions } from '@app/shared/enums';
+import { EventDataDto } from '@app/shared/dtos';
 
 @Controller()
 export class ChatbotController {
   constructor(private readonly chatbotService: ChatbotService) { }
 
-
   @EventPattern(ContextOptions.APPOINTMENT_CREATED)
-  appointmentCreated(@Payload() msg): void {
-    this.chatbotService.appointmentCreated(msg.data);
+  appointmentCreated(@Payload() msg: EventDataDto): void {
+    this.chatbotService.appointmentCreated(msg);
   }
 
   @EventPattern(ContextOptions.CONFIRM_APPOINTMENT)
-  confirmAppointment(@Payload() msg: ConfirmAppointmentDto): void {
-    this.chatbotService.confirmAppointment(msg.data);
+  confirmAppointment(@Payload() msg: EventDataDto): void {
+    this.chatbotService.confirmAppointment(msg);
   }
 }

@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { GenAIApi } from './genai-api.provider';
+import { EventDataDto } from '@app/shared/dtos';
 
 @Injectable()
 export class ChatbotService {
@@ -9,7 +10,7 @@ export class ChatbotService {
     private readonly genAI: GenAIApi,
   ) { }
 
-  async appointmentCreated(data: any): Promise<void> {
+  async appointmentCreated(data: any/*EventDataDto*/): Promise<void> {
     console.log('Data: ', data);
     try {
       const generatedMessage = await this.genAI.generateContent(
@@ -23,7 +24,7 @@ export class ChatbotService {
     }
   }
 
-  async confirmAppointment(data: any): Promise<void> {
+  async confirmAppointment(data: any/*EventDataDto*/): Promise<void> {
     console.log('Data: ', data);
     try {
       const generatedMessage = await this.genAI.generateContent(
