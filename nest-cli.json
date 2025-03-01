@@ -19,6 +19,15 @@
         "tsConfigPath": "apps/chatbot/tsconfig.app.json"
       }
     },
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
     "event-worker": {
       "type": "application",
       "root": "apps/event-worker",

@@ -9,8 +9,8 @@ export class ChatbotController {
   constructor(private readonly chatbotService: ChatbotService) { }
 
   @EventPattern(ContextOptions.APPOINTMENT_CREATED)
-  appointmentCreated(@Payload() msg: EventDataDto): void {
-    this.chatbotService.appointmentCreated(msg);
+  async appointmentCreated(@Payload() msg: EventDataDto) {
+    await this.chatbotService.appointmentCreated(msg);
   }
 
   @EventPattern(ContextOptions.CONFIRM_APPOINTMENT)

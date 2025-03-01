@@ -4,6 +4,7 @@ import { ChatbotService } from './chatbot.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { GenAIApi } from './genai-api.provider';
+import { DatabaseModule } from '@app/database';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { GenAIApi } from './genai-api.provider';
           }
         },
       }
-    ])
+    ]),
+    DatabaseModule,
   ],
   controllers: [ChatbotController],
   providers: [ChatbotService, GenAIApi],

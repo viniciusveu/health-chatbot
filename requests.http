@@ -5,15 +5,8 @@ Content-Type: application/json
 
 {
     "event": "appointment-created",
-    "patientId": "67",
-    "data": {
-        "name": "Marcio Doe",
-        "phone": "1234567890",
-        "age": 79,
-        "gender": "M",
-        "date": "2025-04-01",
-        "time": "10:00"
-    }
+    "patientId": "1",
+    "appointmentId": "4"
 }
 
 ###
