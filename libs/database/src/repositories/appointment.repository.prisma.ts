@@ -4,12 +4,12 @@ import { AppointmentRepository } from './appointment.repository';
 
 @Injectable()
 export class AppointmentRepositoryPrisma implements AppointmentRepository {
-    constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
-    async getAppointmentById(appointmentId: string) {
-        return this.prisma.appointment.findUnique({
-            where: { id: +appointmentId },
-            include: { Patient: true },
-        });
-    }
+  async getAppointmentById(appointmentId: string) {
+    return this.prisma.appointment.findUnique({
+      where: { id: +appointmentId },
+      include: { Patient: true },
+    });
+  }
 }

@@ -1,38 +1,38 @@
 export enum ContextOptions {
-    /**
-     * @abstract Notify the patient about the appointment
-     */
-    APPOINTMENT_CREATED = 'appointment-created',
+  /**
+   * @abstract Notify the patient about the appointment
+   */
+  APPOINTMENT_CREATED = 'appointment-created',
 
-    /**
-     * @abstract Confirm presence one day earlier
-     */
-    CONFIRM_APPOINTMENT = 'confirm-appointment',    
-    
-    /**
-     * @abstract Notify ambulance departure with estimated arrival time 
-     */
-    AMBULANCE_DEPARTURE = 'ambulance-departure',
+  /**
+   * @abstract Confirm presence one day earlier
+   */
+  CONFIRM_APPOINTMENT = 'confirm-appointment',
 
-    /**
-     * @abstract Send data and files after the consultation completed
-     */
-    FINALIZED_APPOINTMENT = 'finalized-appointment',
+  /**
+   * @abstract Notify ambulance departure with estimated arrival time
+   */
+  AMBULANCE_DEPARTURE = 'ambulance-departure',
 
-    /**
-     * @abstract Send a simple survey to collect feedback of the consultation
-     */
-    COLLECT_FEEDBACK = 'collect-feedback',
+  /**
+   * @abstract Send data and files after the consultation completed
+   */
+  FINALIZED_APPOINTMENT = 'finalized-appointment',
 
-    NEXT_APPOINTMENTS = 'next-appointments',
+  /**
+   * @abstract Send a simple survey to collect feedback of the consultation
+   */
+  COLLECT_FEEDBACK = 'collect-feedback',
 
-    CANCEL_APPOINTMENT = 'cancel-appointment',
+  NEXT_APPOINTMENTS = 'next-appointments',
 
-    RESCHEDULE_APPOINTMENT = 'reschedule-appointment',
+  CANCEL_APPOINTMENT = 'cancel-appointment',
 
-    EXAMS_DONE = 'exams-done',
+  RESCHEDULE_APPOINTMENT = 'reschedule-appointment',
 
-    MEDICINE_REMINDER = 'prescription-done',
+  EXAMS_DONE = 'exams-done',
 
-    FAQ = 'faq',
+  MEDICINE_REMINDER = 'prescription-done',
+
+  FAQ = 'faq',
 }

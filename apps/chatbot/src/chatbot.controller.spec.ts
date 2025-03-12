@@ -26,7 +26,7 @@ describe('ChatbotController', () => {
   describe('it must be defined', () => {
     it('should be defined', () => {
       expect(chatbotController).toBeDefined();
+      expect(chatbotService).toBeDefined();
     });
   });
-
 });

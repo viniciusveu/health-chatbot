@@ -6,7 +6,7 @@ import { EventDataDto } from '@app/shared/dtos';
 
 @Controller()
 export class ChatbotController {
-  constructor(private readonly chatbotService: ChatbotService) { }
+  constructor(private readonly chatbotService: ChatbotService) {}
 
   @EventPattern(ContextOptions.APPOINTMENT_CREATED)
   async appointmentCreated(@Payload() msg: EventDataDto) {

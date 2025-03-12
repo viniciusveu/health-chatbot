@@ -11,11 +11,12 @@ describe('MessageWorkerController', () => {
       providers: [MessageWorkerService],
     }).compile();
 
-    messageWorkerController = app.get<MessageWorkerController>(MessageWorkerController);
+    messageWorkerController = app.get<MessageWorkerController>(
+      MessageWorkerController,
+    );
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-    });
+  it('should be defined', () => {
+    expect(messageWorkerController).toBeDefined();
   });
 });

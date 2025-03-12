@@ -1,6 +1,6 @@
-import { PatientData } from "../interfaces";
+import { PatientData } from '../interfaces';
 
 export interface ConfirmAppointmentDto {
-    patientId: string;
-    data: PatientData;
+  patientId: string;
+  data: PatientData;
 }

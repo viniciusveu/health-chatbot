@@ -1,9 +1,9 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class MessageDataDto {
-    @IsString()
-    message: string;
+  @IsString()
+  message: string;
 
-    @IsString()
-    contact: string;
+  @IsString()
+  contact: string;
 }

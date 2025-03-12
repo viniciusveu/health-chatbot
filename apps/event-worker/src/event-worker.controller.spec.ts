@@ -16,17 +16,19 @@ describe('EventWorkerController', () => {
           useValue: {
             emitEvent: jest.fn(),
           },
-        }
+        },
       ],
     }).compile();
 
-    eventWorkerController = app.get<EventWorkerController>(EventWorkerController);
+    eventWorkerController = app.get<EventWorkerController>(
+      EventWorkerController,
+    );
     eventWorkerService = app.get<EventWorkerService>(EventWorkerService);
   });
 
   describe('EventWorkerController', () => {
     it('should send event to EventWorkerService"', () => {
-      let data = new EventDataDto();
+      const data = new EventDataDto();
       jest.spyOn(eventWorkerService, 'emitEvent');
 
       expect(eventWorkerController.emitEvent(data)).toBeUndefined();

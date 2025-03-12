@@ -20,14 +20,14 @@ import { DatabaseModule } from '@app/database';
           urls: ['amqp://localhost:5672'],
           queue: 'message_worker_queue',
           queueOptions: {
-            durable: false
-          }
+            durable: false,
+          },
         },
-      }
+      },
     ]),
     DatabaseModule,
   ],
   controllers: [ChatbotController],
   providers: [ChatbotService, GenAIApi],
 })
-export class ChatbotModule { }
+export class ChatbotModule {}

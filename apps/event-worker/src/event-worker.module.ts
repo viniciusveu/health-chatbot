@@ -18,13 +18,13 @@ import { ConfigModule } from '@nestjs/config';
           urls: ['amqp://localhost:5672'],
           queue: 'chatbot_queue',
           queueOptions: {
-            durable: false
-          }
+            durable: false,
+          },
         },
-      }
+      },
     ]),
   ],
   controllers: [EventWorkerController],
   providers: [EventWorkerService],
 })
-export class EventWorkerModule { }
+export class EventWorkerModule {}
