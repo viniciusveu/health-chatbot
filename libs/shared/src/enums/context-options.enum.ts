@@ -1,4 +1,6 @@
 export enum ContextOptions {
+  SEND_MESSAGE = 'send-message',
+
   /**
    * @abstract Notify the patient about the appointment
    */

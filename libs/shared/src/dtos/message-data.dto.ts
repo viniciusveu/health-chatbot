@@ -6,4 +6,9 @@ export class MessageDataDto {
 
   @IsString()
   contact: string;
+
+  constructor(message: string, contact: string) {
+    this.message = message;
+    this.contact = '+55' + contact;
+  }
 }

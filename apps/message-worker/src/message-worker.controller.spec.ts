@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessageWorkerController } from './message-worker.controller';
 import { MessageWorkerService } from './message-worker.service';
+import { ConfigService } from '@nestjs/config';
 
 describe('MessageWorkerController', () => {
   let messageWorkerController: MessageWorkerController;
@@ -8,7 +9,7 @@ describe('MessageWorkerController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [MessageWorkerController],
-      providers: [MessageWorkerService],
+      providers: [MessageWorkerService, ConfigService],
     }).compile();
 
     messageWorkerController = app.get<MessageWorkerController>(

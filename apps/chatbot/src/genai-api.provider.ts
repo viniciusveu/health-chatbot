@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 export class GenAIApi {
   constructor(private readonly configService: ConfigService) {}
 
-  async generateContent(text: string): Promise<void> {
+  async generateContent(text: string): Promise<string> {
     try {
       const url =
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' +
@@ -32,7 +32,7 @@ export class GenAIApi {
       const json = await response.json();
       console.log(JSON.stringify(json.candidates[0].content.parts[0]));
 
-      return json.candidates[0].content.parts[0];
+      return json.candidates[0].content.parts[0].text;
     } catch (error) {
       console.log(error);
     }

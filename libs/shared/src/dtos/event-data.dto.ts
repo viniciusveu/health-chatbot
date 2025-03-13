@@ -1,4 +1,4 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { ContextOptions } from '../enums';
 
 export class EventDataDto {
@@ -6,8 +6,9 @@ export class EventDataDto {
   event: ContextOptions;
 
   @IsString()
-  patientId: string;
+  appointmentId: string;
 
   @IsString()
-  appointmentId: string;
+  @IsOptional()
+  patientId: string;
 }

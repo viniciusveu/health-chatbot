@@ -1,5 +1,5 @@
 import { EventDataDto } from '@app/shared/dtos';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
@@ -17,6 +17,14 @@ export class EventWorkerService {
     if (!event) {
       throw new Error('Event is null or undefined');
     }
+
+    Logger.log(
+      'Transmiting message to chatbot: ' +
+        event +
+        ' with data: ' +
+        JSON.stringify(data),
+      'EventWorkerService',
+    );
 
     try {
       this.rabbitClient.emit(event, data);
