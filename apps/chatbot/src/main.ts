@@ -16,6 +16,6 @@ async function bootstrap() {
       },
     },
   );
-  await app.listen();
+  await app.init();
 }
 bootstrap();

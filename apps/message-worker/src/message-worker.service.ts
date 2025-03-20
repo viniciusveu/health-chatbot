@@ -1,14 +1,9 @@
 import { MessageDataDto } from '@app/shared/dtos';
-import { Body, Inject, Injectable, Logger } from '@nestjs/common';
+import { ContextOptions } from '@app/shared/enums';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { Twilio } from 'twilio';
-
-export interface ReceivedMessageDto {
-  from: string;
-  body: string;
-  //Add other fields as needed from your Twilio webhook
-}
 
 @Injectable()
 export class MessageWorkerService {
@@ -38,25 +33,18 @@ export class MessageWorkerService {
     }
   }
 
-  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {
+  async receiveMessage(from: string, body: string): Promise<void> {
     Logger.log(
-      `Received incoming message from Twilio: ${JSON.stringify(data)}`,
+      `Received incoming message from Twilio: From: ${from} | Message: ${body}`,
     );
-    try {
-      //  Validate and extract data.  This depends heavily on your Twilio webhook payload.
-      const from = data.From;
-      const body = data.Body;
-      if (!from || !body) {
-        Logger.warn("Incomplete Twilio message received.  Missing 'From' or 'Body'.");
-        return null;
-      }
 
-      const message: TwilioMessageDto = {
-        from: from,
-        body: body,
-        // Add other fields from twilioBody as needed
-      };
-      return message;
+    if (!from || !body) {
+      Logger.warn("Incomplete Twilio message received. Missing 'from' or 'body'.");
+      return null;
+    }
+
+    try {
+      this.rabbitClient.emit(ContextOptions.MESSAGE_RECEIVED, { from, body })
     } catch (error) {
       Logger.error(`Error processing incoming message: ${error.message}`, error.stack);
       return null;

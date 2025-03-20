@@ -1,5 +1,6 @@
 export enum ContextOptions {
   SEND_MESSAGE = 'send-message',
+  MESSAGE_RECEIVED = 'message-received',
 
   /**
    * @abstract Notify the patient about the appointment
