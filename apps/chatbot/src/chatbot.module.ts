@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { GenAIApi } from './genai-api.provider';
 import { DatabaseModule } from '@app/database';
+import { QueuesEnum } from '@app/shared/enums';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { DatabaseModule } from '@app/database';
         name: 'MESSAGE_WORKER',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
-          queue: 'message_worker_queue',
+          urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
+          queue: QueuesEnum.MESSAGE_WORKER,
           queueOptions: {
             durable: false,
           },

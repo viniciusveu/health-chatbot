@@ -9,6 +9,8 @@ RUN npm install @nestjs/cli --global
 
 COPY . .
 
+RUN npm run build
+
 EXPOSE 3002
 
 CMD [ "nest", "start", "message-worker","--watch" ]

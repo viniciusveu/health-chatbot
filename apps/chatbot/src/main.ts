@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ChatbotModule } from './chatbot.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { QueuesEnum } from '@app/shared/enums';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -8,8 +9,8 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
-        queue: 'chatbot_queue',
+        urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
+        queue: QueuesEnum.CHATBOT,
         queueOptions: {
           durable: false,
         },

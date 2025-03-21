@@ -5,7 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 @Injectable()
 export class EventWorkerService {
   constructor(
-    @Inject('EVENT_WORKER') private readonly rabbitClient: ClientProxy,
+    @Inject('CHATBOT') private readonly rabbitClient: ClientProxy,
   ) {}
 
   emitEvent(data: EventDataDto): void {

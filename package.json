@@ -29,6 +29,7 @@
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.5",
     "knex": "^3.1.0",
+    "oracledb": "^6.8.0",
     "pg": "^8.14.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",

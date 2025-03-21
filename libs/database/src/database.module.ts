@@ -10,13 +10,23 @@ const databaseProvider =
     ? AppointmentRepositoryPrisma
     : AppointmentRepositoryKnex;
 
-@Module({
+@Module({ 
   providers: [
     PrismaService,
     KnexService,
-    { provide: 'AppointmentRepository', useClass: databaseProvider },
+    {
+      provide: 'AppointmentRepository',
+      useFactory: (prisma: PrismaService, knex: KnexService) => {
+        if (process.env.DB_TYPE === 'prisma') {
+          return new AppointmentRepositoryPrisma(prisma);
+        } else {
+          return new AppointmentRepositoryKnex(knex);
+        }
+      },
+      inject: [PrismaService, KnexService],
+    },
     RepositoryFactory,
   ],
   exports: ['AppointmentRepository', RepositoryFactory],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

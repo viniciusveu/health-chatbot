@@ -10,6 +10,7 @@ export class ChatbotController {
 
   @EventPattern(ContextOptions.APPOINTMENT_CREATED)
   async appointmentCreated(@Payload() msg: EventDataDto) {
+    console.log('Data: ', msg);
     await this.chatbotService.appointmentCreated(msg);
   }
 

@@ -3,6 +3,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management-alpine
+    restart: unless-stopped
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -20,16 +21,13 @@ services:
     build:
       context: .
       dockerfile: ./apps/chatbot/Dockerfile
-    ports:
-      - "3000:3000"
     environment:
       - NODE_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
       - chatbot-net
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
     depends_on:
       - rabbitmq
 
@@ -38,14 +36,15 @@ services:
     build:
       context: .
       dockerfile: ./apps/event-worker/Dockerfile
+    ports:
+      - "3000:3000"
     environment:
       - NODE_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
       - chatbot-net
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
     depends_on:
       - rabbitmq
 
@@ -56,12 +55,11 @@ services:
       dockerfile: ./apps/message-worker/Dockerfile
     environment:
       - NODE_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
       - chatbot-net
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
     depends_on:
       - rabbitmq
 

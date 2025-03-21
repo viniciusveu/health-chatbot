@@ -9,7 +9,7 @@ import { Twilio } from 'twilio';
 export class MessageWorkerService {
   constructor(
     private readonly configService: ConfigService,
-    @Inject('MESSAGE_WORKER') private readonly rabbitClient: ClientProxy,
+    @Inject('CHATBOT') private readonly rabbitClient: ClientProxy,
   ) { }
 
   async sendMessage(data: MessageDataDto): Promise<void> {

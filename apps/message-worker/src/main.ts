@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MessageWorkerModule } from './message-worker.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { QueuesEnum } from '@app/shared/enums';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -8,14 +9,14 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
-        queue: 'message_worker_queue',
+        urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
+        queue: QueuesEnum.MESSAGE_WORKER,
         queueOptions: {
           durable: false,
         },
       },
     },
   );
-  await app.listen();
+  await app.init();
 }
 bootstrap();
