@@ -16,7 +16,9 @@ describe('EventWorkerService', () => {
           provide: QueueClient,
           useValue: {
             emit: jest.fn().mockImplementation((event, data) => {
-              console.log(`Mocked emit: event=${event}, data=${JSON.stringify(data)}`);
+              console.log(
+                `Mocked emit: event=${event}, data=${JSON.stringify(data)}`,
+              );
               return Promise.resolve();
             }),
           },
@@ -70,9 +72,13 @@ describe('EventWorkerService', () => {
       const data = new EventDataDto();
       data.event = ContextOptions.APPOINTMENT_CREATED;
 
-      jest.spyOn(queueClient, 'emit').mockRejectedValueOnce(new Error('Error while emitting event'));
+      jest
+        .spyOn(queueClient, 'emit')
+        .mockRejectedValueOnce(new Error('Error while emitting event'));
 
-      await expect(eventWorkerService.emitEvent(data)).rejects.toThrow('Error while emitting event');
+      await expect(eventWorkerService.emitEvent(data)).rejects.toThrow(
+        'Error while emitting event',
+      );
     });
   });
 });

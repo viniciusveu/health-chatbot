@@ -9,14 +9,15 @@ describe('MessageWorkerController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [MessageWorkerController],
-      providers: [MessageWorkerController, 
+      providers: [
+        MessageWorkerController,
         {
           provide: MessageWorkerService,
           useValue: {
             sendMessage: jest.fn(),
             receiveMessage: jest.fn(),
           },
-        }
+        },
       ],
     }).compile();
 

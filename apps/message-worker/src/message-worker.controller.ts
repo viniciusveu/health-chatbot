@@ -14,7 +14,7 @@ export class MessageWorkerController {
   }
 
   @Post('webhook')
-  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {    
+  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {
     await this.messageWorkerService.receiveMessage(data.From, data.Body);
   }
 }

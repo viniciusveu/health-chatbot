@@ -7,8 +7,8 @@ describe('QueueService', () => {
 
   beforeEach(async () => {
     const mockQueueClient = {
-        emit: jest.fn(),
-      };
+      emit: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -22,5 +22,6 @@ describe('QueueService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(queueClient).toBeDefined();
   });
 });

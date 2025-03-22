@@ -4,9 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class EventWorkerService {
-  constructor(
-    private readonly queueClient: QueueClient,
-  ) {}
+  constructor(private readonly queueClient: QueueClient) {}
 
   async emitEvent(data: EventDataDto): Promise<void> {
     if (!data) {

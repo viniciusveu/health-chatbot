@@ -5,12 +5,7 @@ import { AppointmentRepositoryPrisma } from './repositories/appointment.reposito
 import { AppointmentRepositoryKnex } from './repositories/appointment.repository.knex';
 import { RepositoryFactory } from './repository.factory';
 
-const databaseProvider =
-  process.env.DB_TYPE === 'prisma'
-    ? AppointmentRepositoryPrisma
-    : AppointmentRepositoryKnex;
-
-@Module({ 
+@Module({
   providers: [
     PrismaService,
     KnexService,
@@ -29,4 +24,4 @@ const databaseProvider =
   ],
   exports: ['AppointmentRepository', RepositoryFactory],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

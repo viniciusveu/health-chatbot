@@ -3,7 +3,9 @@ import { PrismaService } from '../prisma.service';
 import { AppointmentRepositoryInterface } from './appointment.repository';
 
 @Injectable()
-export class AppointmentRepositoryPrisma implements AppointmentRepositoryInterface {
+export class AppointmentRepositoryPrisma
+  implements AppointmentRepositoryInterface
+{
   constructor(private readonly prisma: PrismaService) {}
 
   async getAppointmentById(appointmentId: string) {

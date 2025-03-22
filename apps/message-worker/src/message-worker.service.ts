@@ -1,9 +1,8 @@
 import { QueueClient } from '@app/queue';
 import { MessageDataDto } from '@app/shared/dtos';
 import { ContextOptions } from '@app/shared/enums';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy } from '@nestjs/microservices';
 import { Twilio } from 'twilio';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class MessageWorkerService {
   constructor(
     private readonly queueClient: QueueClient,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   async sendMessage(data: MessageDataDto): Promise<void> {
     console.log('Sending msg: ', data);
@@ -28,7 +27,7 @@ export class MessageWorkerService {
           to: 'whatsapp:' + data.contact, // '+5519998682835' '+551896654562' data.contact
           body: data.message,
         })
-        .then((message) => console.log('Mensagem enviada:', message.sid));      
+        .then((message) => console.log('Mensagem enviada:', message.sid));
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
     }
@@ -40,14 +39,19 @@ export class MessageWorkerService {
     );
 
     if (!From || !Body) {
-      Logger.warn("Incomplete Twilio message received. Missing 'from' or 'body'.");
+      Logger.warn(
+        "Incomplete Twilio message received. Missing 'from' or 'body'.",
+      );
       return null;
     }
 
     try {
-      this.queueClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body })
+      this.queueClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body });
     } catch (error) {
-      Logger.error(`Error processing incoming message: ${error.message}`, error.stack);
+      Logger.error(
+        `Error processing incoming message: ${error.message}`,
+        error.stack,
+      );
       return null;
     }
   }

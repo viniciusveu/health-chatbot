@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ContextOptions } from '@app/shared/enums';
 import { EventDataDto, ReceivedMessageDto } from '@app/shared/dtos';
-import { AppointmentCreatedUseCase,  } from '../../application/use-cases/appointment-created.use-case';
+import { AppointmentCreatedUseCase } from '../../application/use-cases/appointment-created.use-case';
 import { ConfirmAppointmentUseCase } from '../../application/use-cases/confirm-appointment.use-case';
 import { MessageReceivedUseCase } from '../../application/use-cases/message-received.use-case';
 

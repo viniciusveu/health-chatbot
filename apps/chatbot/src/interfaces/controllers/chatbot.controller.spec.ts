@@ -4,14 +4,13 @@ import { ConfirmAppointmentUseCase } from '../../application/use-cases/confirm-a
 import { AppointmentCreatedUseCase } from '../../application/use-cases/appointment-created.use-case';
 import { MessageReceivedUseCase } from '../../application/use-cases/message-received.use-case';
 
-
 describe('ChatbotController', () => {
   let chatbotController: ChatbotController;
 
   let confirmAppointmentUseCase: ConfirmAppointmentUseCase;
   let appointmentCreatedUseCase: AppointmentCreatedUseCase;
   let messageReceivedUseCase: MessageReceivedUseCase;
-  
+
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ChatbotController],
@@ -38,9 +37,15 @@ describe('ChatbotController', () => {
     }).compile();
 
     chatbotController = app.get<ChatbotController>(ChatbotController);
-    confirmAppointmentUseCase = app.get<ConfirmAppointmentUseCase>(ConfirmAppointmentUseCase);
-    appointmentCreatedUseCase = app.get<AppointmentCreatedUseCase>(AppointmentCreatedUseCase);
-    messageReceivedUseCase = app.get<MessageReceivedUseCase>(MessageReceivedUseCase);
+    confirmAppointmentUseCase = app.get<ConfirmAppointmentUseCase>(
+      ConfirmAppointmentUseCase,
+    );
+    appointmentCreatedUseCase = app.get<AppointmentCreatedUseCase>(
+      AppointmentCreatedUseCase,
+    );
+    messageReceivedUseCase = app.get<MessageReceivedUseCase>(
+      MessageReceivedUseCase,
+    );
   });
 
   describe('it must be defined', () => {

@@ -13,4 +13,4 @@ import { QueueModule } from '@app/queue';
   controllers: [MessageWorkerController],
   providers: [MessageWorkerService],
 })
-export class MessageWorkerModule { }
+export class MessageWorkerModule {}

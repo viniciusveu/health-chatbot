@@ -7,4 +7,4 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.EVENT_WORKER_PORT ?? 3000);
 }
-bootstrap().catch(error => console.log(error));
+bootstrap().catch((error) => console.log(error));
