@@ -1,22 +1,40 @@
-import { ClientProxy } from '@nestjs/microservices';
 import { EventWorkerService } from './event-worker.service';
 import { ContextOptions } from '@app/shared/enums';
 import { EventDataDto } from '@app/shared/dtos';
+import { QueueClient } from '@app/queue';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('EventWorkerService', () => {
   let eventWorkerService: EventWorkerService;
-  let rabbitClient: ClientProxy;
+  let queueClient: QueueClient;
 
-  beforeEach(() => {
-    rabbitClient = {
-      emit: jest.fn(),
-    } as any;
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        EventWorkerService,
+        {
+          provide: QueueClient,
+          useValue: {
+            emit: jest.fn().mockImplementation((event, data) => {
+              console.log(`Mocked emit: event=${event}, data=${JSON.stringify(data)}`);
+              return Promise.resolve();
+            }),
+          },
+        },
+      ],
+    }).compile();
 
-    eventWorkerService = new EventWorkerService(rabbitClient);
+    queueClient = module.get<QueueClient>(QueueClient);
+    eventWorkerService = module.get<EventWorkerService>(EventWorkerService);
+  });
+
+  it('should be defined', () => {
+    expect(eventWorkerService).toBeDefined();
+    expect(queueClient).toBeDefined();
   });
 
   describe('emitEvent', () => {
-    it('should emit event', () => {
+    it('should emit event successfully', async () => {
       const data = {
         event: ContextOptions.APPOINTMENT_CREATED,
         patientId: '123',
@@ -24,40 +42,37 @@ describe('EventWorkerService', () => {
       };
       const event = data.event;
 
-      eventWorkerService.emitEvent(data);
+      jest.spyOn(queueClient, 'emit').mockResolvedValueOnce(undefined);
 
-      delete data.event;
-      expect(rabbitClient.emit).toHaveBeenCalledWith(event, data);
+      await eventWorkerService.emitEvent(data);
+
+      const expectedPayload = { ...data };
+
+      expect(queueClient.emit).toHaveBeenCalledWith(event, expectedPayload);
     });
 
-    it('should throw error when data is null or undefined', () => {
-      const data = null;
-
-      expect(() => eventWorkerService.emitEvent(data)).toThrowError(
+    it('should throw error when data is null', async () => {
+      await expect(eventWorkerService.emitEvent(null)).rejects.toThrow(
         'EventDataDto is null or undefined',
       );
     });
 
-    it('should throw error when event is null or undefined', () => {
+    it('should throw error when event is null', async () => {
       const data = new EventDataDto();
       data.event = null;
 
-      expect(() => eventWorkerService.emitEvent(data)).toThrowError(
+      await expect(eventWorkerService.emitEvent(data)).rejects.toThrow(
         'Event is null or undefined',
       );
     });
 
-    it('should throw error when error while emitting event', () => {
+    it('should throw error when emit fails', async () => {
       const data = new EventDataDto();
       data.event = ContextOptions.APPOINTMENT_CREATED;
 
-      (rabbitClient.emit as jest.Mock).mockImplementation(() => {
-        throw new Error('Error while emitting event');
-      });
+      jest.spyOn(queueClient, 'emit').mockRejectedValueOnce(new Error('Error while emitting event'));
 
-      expect(() => eventWorkerService.emitEvent(data)).toThrowError(
-        'Error while emitting event',
-      );
+      await expect(eventWorkerService.emitEvent(data)).rejects.toThrow('Error while emitting event');
     });
   });
 });

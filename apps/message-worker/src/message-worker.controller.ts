@@ -9,14 +9,12 @@ export class MessageWorkerController {
   constructor(private readonly messageWorkerService: MessageWorkerService) {}
 
   @EventPattern(ContextOptions.SEND_MESSAGE)
-  async sendMessage(msg: MessageDataDto): Promise<void> {
-    await this.messageWorkerService.sendMessage(msg);
+  async sendMessage(data: MessageDataDto): Promise<void> {
+    await this.messageWorkerService.sendMessage(data);
   }
 
   @Post('webhook')
-  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {
-    console.log(`Message received: ${JSON.stringify(data)}`);
-    
+  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {    
     await this.messageWorkerService.receiveMessage(data.From, data.Body);
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { AppointmentRepository } from './appointment.repository';
+import { AppointmentRepositoryInterface } from './appointment.repository';
 
 @Injectable()
-export class AppointmentRepositoryPrisma implements AppointmentRepository {
+export class AppointmentRepositoryPrisma implements AppointmentRepositoryInterface {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAppointmentById(appointmentId: string) {

@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
-import { ChatbotController } from './chatbot.controller';
-import { ChatbotService } from './chatbot.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ChatbotController } from './interfaces/controllers/chatbot.controller';
 import { ConfigModule } from '@nestjs/config';
-import { GenAIApi } from './genai-api.provider';
+import { GenAIApi } from './infrastructure/providers/genai-api.provider';
 import { DatabaseModule } from '@app/database';
 import { QueuesEnum } from '@app/shared/enums';
+import { AppointmentRepository } from './infrastructure/repositories/appointment.repository';
+import { AppointmentCreatedUseCase } from './application/use-cases/appointment-created.use-case';
+import { ConfirmAppointmentUseCase } from './application/use-cases/confirm-appointment.use-case';
+import { MessageReceivedUseCase } from './application/use-cases/message-received.use-case';
+import { QueueModule } from '@app/queue';
+
+const USE_CASES = [
+  AppointmentCreatedUseCase,
+  ConfirmAppointmentUseCase,
+  MessageReceivedUseCase,
+  // Add more use cases here
+];
 
 @Module({
   imports: [
@@ -13,22 +23,10 @@ import { QueuesEnum } from '@app/shared/enums';
       isGlobal: true,
       envFilePath: ['.env', 'apps/chatbot/.env'],
     }),
-    ClientsModule.register([
-      {
-        name: 'MESSAGE_WORKER',
-        transport: Transport.RMQ,
-        options: {
-          urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
-          queue: QueuesEnum.MESSAGE_WORKER,
-          queueOptions: {
-            durable: true,
-          },
-        },
-      },
-    ]),
+    QueueModule.register(QueuesEnum.MESSAGE_WORKER),
     DatabaseModule,
   ],
   controllers: [ChatbotController],
-  providers: [ChatbotService, GenAIApi],
+  providers: [GenAIApi, AppointmentRepository, ...USE_CASES],
 })
 export class ChatbotModule {}

@@ -1,14 +1,14 @@
+import { QueueClient } from '@app/queue';
 import { EventDataDto } from '@app/shared/dtos';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class EventWorkerService {
   constructor(
-    @Inject('CHATBOT') private readonly rabbitClient: ClientProxy,
+    private readonly queueClient: QueueClient,
   ) {}
 
-  emitEvent(data: EventDataDto): void {
+  async emitEvent(data: EventDataDto): Promise<void> {
     if (!data) {
       throw new Error('EventDataDto is null or undefined');
     }
@@ -27,7 +27,7 @@ export class EventWorkerService {
     );
 
     try {
-      this.rabbitClient.emit(event, data);
+      await this.queueClient.emit(event, data);
     } catch (error) {
       console.error('Error while emitting event', error);
       throw error;

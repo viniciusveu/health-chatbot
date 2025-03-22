@@ -24,4 +24,4 @@ async function bootstrap() {
 
   console.log(`MessageWorker HTTP server running on port ${port}`);
 }
-bootstrap();
+bootstrap().catch(error => console.log(error));

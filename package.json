@@ -87,6 +87,7 @@
     "moduleNameMapper": {
       "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
       "^@app/logging(|/.*)$": "<rootDir>/libs/logging/src/$1",
+      "^@app/queue(|/.*)$": "<rootDir>/libs/queue/src/$1",
       "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   },

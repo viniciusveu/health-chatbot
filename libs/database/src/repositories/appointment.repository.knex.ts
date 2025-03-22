@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AppointmentRepository } from './appointment.repository';
+import { AppointmentRepositoryInterface } from './appointment.repository';
 import { KnexService } from '../knex.service';
 
 @Injectable()
-export class AppointmentRepositoryKnex implements AppointmentRepository {
+export class AppointmentRepositoryKnex implements AppointmentRepositoryInterface {
   constructor(private readonly knexService: KnexService) {}
 
   async getAppointmentById(appointmentId: string) {

@@ -31,6 +31,12 @@
       "@app/logging/*": [
         "libs/logging/src/*"
       ],
+      "@app/queue": [
+        "libs/queue/src"
+      ],
+      "@app/queue/*": [
+        "libs/queue/src/*"
+      ],
       "@app/shared": [
         "libs/shared/src"
       ],
