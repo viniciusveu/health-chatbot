@@ -55,6 +55,8 @@ services:
     build:
       context: .
       dockerfile: ./apps/message-worker/Dockerfile
+    ports:
+      - "4000:4000"
     environment:
       - NODE_ENV=development
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672

@@ -2,8 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { MessageWorkerService } from './message-worker.service';
 import { EventPattern } from '@nestjs/microservices';
 import { ContextOptions } from '@app/shared/enums';
-import { MessageDataDto } from '@app/shared/dtos';
-import { ReceivedMessageDto } from '@app/shared/dtos/received-message.dto';
+import { MessageDataDto, ReceivedMessageDto } from '@app/shared/dtos';
 
 @Controller('messages')
 export class MessageWorkerController {
@@ -16,6 +15,8 @@ export class MessageWorkerController {
 
   @Post('webhook')
   async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {
-    await this.messageWorkerService.receiveMessage(data.from, data.body);
+    console.log(`Message received: ${JSON.stringify(data)}`);
+    
+    await this.messageWorkerService.receiveMessage(data.From, data.Body);
   }
 }

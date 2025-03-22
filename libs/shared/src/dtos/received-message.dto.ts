@@ -1,4 +1,4 @@
 export interface ReceivedMessageDto {
-  from: string;
-  body: string;
+  From: string;
+  Body: string;
 }

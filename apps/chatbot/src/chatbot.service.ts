@@ -13,6 +13,10 @@ export class ChatbotService {
     private readonly genAI: GenAIApi,
   ) {}
 
+  async messageReceived(msg) {
+    console.log('Message received', msg);
+  }
+
   async appointmentCreated(data: EventDataDto): Promise<void> {
     console.log('Data: ', data);
     try {

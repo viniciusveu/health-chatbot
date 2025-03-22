@@ -33,18 +33,18 @@ export class MessageWorkerService {
     }
   }
 
-  async receiveMessage(from: string, body: string): Promise<void> {
+  async receiveMessage(From: string, Body: string): Promise<void> {
     Logger.log(
-      `Received incoming message from Twilio: From: ${from} | Message: ${body}`,
+      `Received incoming message from Twilio: From: ${From} | Message: ${Body}`,
     );
 
-    if (!from || !body) {
+    if (!From || !Body) {
       Logger.warn("Incomplete Twilio message received. Missing 'from' or 'body'.");
       return null;
     }
 
     try {
-      this.rabbitClient.emit(ContextOptions.MESSAGE_RECEIVED, { from, body })
+      this.rabbitClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body })
     } catch (error) {
       Logger.error(`Error processing incoming message: ${error.message}`, error.stack);
       return null;

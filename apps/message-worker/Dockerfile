@@ -11,6 +11,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3002
+EXPOSE 4000
 
 CMD [ "nest", "start", "message-worker","--watch" ]
