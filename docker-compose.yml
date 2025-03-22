@@ -30,6 +30,7 @@ services:
       - .:/usr/src/app
     depends_on:
       - rabbitmq
+      - message-worker
 
   event-worker:
     container_name: event-worker
@@ -47,6 +48,7 @@ services:
       - .:/usr/src/app
     depends_on:
       - rabbitmq
+      - chatbot
 
   message-worker:
     container_name: message-worker

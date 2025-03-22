@@ -12,11 +12,11 @@ async function bootstrap() {
         urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
         queue: QueuesEnum.MESSAGE_WORKER,
         queueOptions: {
-          durable: false,
+          durable: true,
         },
       },
     },
   );
-  await app.init();
+  await app.listen();
 }
 bootstrap();

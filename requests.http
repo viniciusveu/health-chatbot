@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "event": "appointment-created",
-    "appointmentId": "4"
+    "appointmentId": "1"
 }
 
 ###
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "event": "confirm-appointment",
-    "appointmentId": "4"
+    "appointmentId": "1"
 }
 
 ###

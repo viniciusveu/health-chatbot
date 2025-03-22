@@ -41,7 +41,7 @@ export class ChatbotService {
       );
 
       this.rabbitClient.emit(
-        ContextOptions.APPOINTMENT_CREATED,
+        ContextOptions.SEND_MESSAGE,
         new MessageDataDto(generatedMessage, appointment.Patient.phone),
       );
     } catch (error) {
@@ -77,7 +77,7 @@ export class ChatbotService {
       );
 
       this.rabbitClient.emit(
-        ContextOptions.CONFIRM_APPOINTMENT,
+        ContextOptions.SEND_MESSAGE,
         new MessageDataDto(generatedMessage, appointment.Patient.phone),
       );
     } catch (error) {

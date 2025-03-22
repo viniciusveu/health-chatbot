@@ -9,13 +9,12 @@ export class ChatbotController {
   constructor(private readonly chatbotService: ChatbotService) {}
 
   @EventPattern(ContextOptions.APPOINTMENT_CREATED)
-  async appointmentCreated(@Payload() msg: EventDataDto) {
-    console.log('Data: ', msg);
+  async appointmentCreated(@Payload() msg: EventDataDto): Promise<void> {
     await this.chatbotService.appointmentCreated(msg);
   }
 
   @EventPattern(ContextOptions.CONFIRM_APPOINTMENT)
-  confirmAppointment(@Payload() msg: EventDataDto): void {
-    this.chatbotService.confirmAppointment(msg);
+  async confirmAppointment(@Payload() msg: EventDataDto): Promise<void> {
+    await this.chatbotService.confirmAppointment(msg);
   }
 }
