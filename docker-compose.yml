@@ -14,7 +14,7 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
     networks:
-      - chatbot-net
+      - chatbot_net
 
   chatbot:
     container_name: chatbot
@@ -25,12 +25,11 @@ services:
       - NODE_ENV=development
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
-      - chatbot-net
+      - chatbot_net
     volumes:
       - .:/usr/src/app
     depends_on:
       - rabbitmq
-      - message-worker
 
   event-worker:
     container_name: event-worker
@@ -43,12 +42,11 @@ services:
       - NODE_ENV=development
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
-      - chatbot-net
+      - chatbot_net
     volumes:
       - .:/usr/src/app
     depends_on:
       - rabbitmq
-      - chatbot
 
   message-worker:
     container_name: message-worker
@@ -61,12 +59,12 @@ services:
       - NODE_ENV=development
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     networks:
-      - chatbot-net
+      - chatbot_net
     volumes:
       - .:/usr/src/app
     depends_on:
       - rabbitmq
 
 networks:
-  chatbot-net:
-    driver: bridge
+  chatbot_net:
+    external: true
