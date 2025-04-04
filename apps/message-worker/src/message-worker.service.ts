@@ -48,10 +48,6 @@ export class MessageWorkerService {
     try {
       this.queueClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body });
     } catch (error) {
-      Logger.error(
-        `Error processing incoming message: ${error.message}`,
-        error.stack,
-      );
       return null;
     }
   }

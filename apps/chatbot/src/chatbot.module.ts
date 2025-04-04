@@ -9,6 +9,8 @@ import { AppointmentCreatedUseCase } from './application/use-cases/appointment-c
 import { ConfirmAppointmentUseCase } from './application/use-cases/confirm-appointment.use-case';
 import { MessageReceivedUseCase } from './application/use-cases/message-received.use-case';
 import { QueueModule } from '@app/queue';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from '@app/logging/logging.interceptor';
 
 const USE_CASES = [
   AppointmentCreatedUseCase,
@@ -27,6 +29,14 @@ const USE_CASES = [
     DatabaseModule,
   ],
   controllers: [ChatbotController],
-  providers: [GenAIApi, AppointmentRepository, ...USE_CASES],
+  providers: [
+    GenAIApi,
+    AppointmentRepository,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    ...USE_CASES,
+  ],
 })
 export class ChatbotModule {}

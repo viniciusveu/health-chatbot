@@ -3,6 +3,7 @@ import {
   Injectable,
   OnModuleInit,
   OnModuleDestroy,
+  Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -16,9 +17,12 @@ export class QueueClient implements OnModuleInit, OnModuleDestroy {
 
   async emit(pattern: string, data: any): Promise<void> {
     try {
+      Logger.log(`📤 Emitting pattern "${pattern}"`);
+      Logger.log('📦 Payload:', JSON.stringify(data));
+      
       await this.client.emit(pattern, data);
     } catch (error) {
-      console.error('Error emitting event to RabbitMQ:', error);
+      Logger.error('❌ Error emitting event to queue:', error);
       throw error;
     }
   }

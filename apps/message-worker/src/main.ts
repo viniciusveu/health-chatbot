@@ -3,9 +3,11 @@ import { MessageWorkerModule } from './message-worker.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { QueuesEnum } from '@app/shared/enums';
 import { generateQueueOptions } from '@app/shared/helpers';
+import { LoggingInterceptor } from '@app/logging/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(MessageWorkerModule);
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,

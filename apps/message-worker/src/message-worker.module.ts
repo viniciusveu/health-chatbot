@@ -11,6 +11,8 @@ import { QueueModule } from '@app/queue';
     QueueModule.register(QueuesEnum.CHATBOT),
   ],
   controllers: [MessageWorkerController],
-  providers: [MessageWorkerService],
+  providers: [
+    MessageWorkerService,
+  ],
 })
 export class MessageWorkerModule {}

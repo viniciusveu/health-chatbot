@@ -30,7 +30,6 @@ export class GenAIApi {
       }
 
       const json = await response.json();
-      console.log(JSON.stringify(json.candidates[0].content.parts[0]));
 
       return json.candidates[0].content.parts[0].text;
     } catch (error) {

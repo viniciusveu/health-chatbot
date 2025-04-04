@@ -14,7 +14,6 @@ export class AppointmentCreatedUseCase {
   ) {}
 
   async execute(data: EventDataDto): Promise<void> {
-    console.log('Data: ', data);
     try {
       const appointment = await this.appointmentRepository.getAppointmentById(
         data.appointmentId,

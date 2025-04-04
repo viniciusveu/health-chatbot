@@ -16,18 +16,9 @@ export class EventWorkerService {
       throw new Error('Event is null or undefined');
     }
 
-    Logger.log(
-      'Transmiting message to chatbot: ' +
-        event +
-        ' with data: ' +
-        JSON.stringify(data),
-      'EventWorkerService',
-    );
-
     try {
       await this.queueClient.emit(event, data);
     } catch (error) {
-      console.error('Error while emitting event', error);
       throw error;
     }
   }

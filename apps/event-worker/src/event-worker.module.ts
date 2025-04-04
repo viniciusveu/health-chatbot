@@ -4,6 +4,8 @@ import { EventWorkerService } from './event-worker.service';
 import { ConfigModule } from '@nestjs/config';
 import { QueuesEnum } from '@app/shared/enums';
 import { QueueModule } from '@app/queue';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from '@app/logging/logging.interceptor';
 
 @Module({
   imports: [
@@ -14,6 +16,12 @@ import { QueueModule } from '@app/queue';
     QueueModule.register(QueuesEnum.CHATBOT),
   ],
   controllers: [EventWorkerController],
-  providers: [EventWorkerService],
+  providers: [
+    EventWorkerService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class EventWorkerModule {}
