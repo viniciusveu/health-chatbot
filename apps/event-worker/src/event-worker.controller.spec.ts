@@ -2,37 +2,43 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventWorkerController } from './event-worker.controller';
 import { EventWorkerService } from './event-worker.service';
 import { EventDataDto } from '@app/shared/dtos';
+import { ContextOptions } from '@app/shared/enums';
+import { JwtAuthGuard } from '@app/auth';
 
 describe('EventWorkerController', () => {
-  let eventWorkerController: EventWorkerController;
-  let eventWorkerService: EventWorkerService;
+  let controller: EventWorkerController;
+  let service: EventWorkerService;
+
+  const mockService = {
+    emitEvent: jest.fn(),
+  };
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [EventWorkerController],
-      providers: [
-        {
-          provide: EventWorkerService,
-          useValue: {
-            emitEvent: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
+      providers: [{ provide: EventWorkerService, useValue: mockService }],
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
-    eventWorkerController = app.get<EventWorkerController>(
-      EventWorkerController,
-    );
-    eventWorkerService = app.get<EventWorkerService>(EventWorkerService);
+    controller = module.get<EventWorkerController>(EventWorkerController);
+    service = module.get<EventWorkerService>(EventWorkerService);
   });
 
-  describe('EventWorkerController', () => {
-    it('should send event to EventWorkerService"', () => {
-      const data = new EventDataDto();
-      jest.spyOn(eventWorkerService, 'emitEvent');
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 
-      expect(eventWorkerController.emitEvent(data)).toBeUndefined();
-      expect(eventWorkerService.emitEvent).toHaveBeenCalledWith(data);
-    });
+  it('should call emitEvent with correct data', () => {
+    const dto: EventDataDto = {
+      event: ContextOptions.APPOINTMENT_CREATED,
+      appointmentId: '123',
+    };
+
+    controller.emitEvent(dto);
+
+    expect(service.emitEvent).toHaveBeenCalledWith(dto);
+    expect(service.emitEvent).toHaveBeenCalledTimes(1);
   });
 });

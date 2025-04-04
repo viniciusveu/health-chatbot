@@ -6,9 +6,11 @@ import { QueuesEnum } from '@app/shared/enums';
 import { QueueModule } from '@app/queue';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@app/logging/logging.interceptor';
+import { AuthModule } from '@app/auth';
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env', 'apps/event-worker/.env'],

@@ -1,7 +1,18 @@
 ###
 
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "userId": "teste",
+    "name": "teste"
+}
+
+###
+
 POST http://localhost:3000/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0Mzc5ODUxNywiZXhwIjoxNzQzODAyMTE3fQ.8kGWB1GtKEqp1XjAP-xnfQ8DwO_LOTCQbG9nA4Adrik
 
 {
     "event": "appointment-created",
@@ -12,6 +23,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0Mzc5ODUxNywiZXhwIjoxNzQzODAyMTE3fQ.8kGWB1GtKEqp1XjAP-xnfQ8DwO_LOTCQbG9nA4Adrik
 
 {
     "event": "confirm-appointment",

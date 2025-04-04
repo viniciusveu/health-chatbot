@@ -10,5 +10,5 @@ export class EventDataDto {
 
   @IsString()
   @IsOptional()
-  patientId: string;
+  patientId?: string;
 }

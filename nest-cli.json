@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/chatbot",
   "projects": {
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    },
     "chatbot": {
       "type": "application",
       "root": "apps/chatbot",
