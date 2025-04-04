@@ -48,7 +48,7 @@ export class MessageWorkerService {
     try {
       this.queueClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body });
     } catch (error) {
-      return null;
+      throw error;
     }
   }
 }

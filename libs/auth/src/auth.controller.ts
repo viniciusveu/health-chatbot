@@ -7,7 +7,6 @@ export class AuthController {
 
   @Post('login')
   login(@Body() body: { userId: string; name: string }) {
-    
     const token = this.authService.generateToken({
       sub: body.userId,
       name: body.name,

@@ -1,11 +1,17 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request as ExpressRequest } from 'express';
 
 interface Request extends ExpressRequest {
   user: any;
 }
-  
+
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
@@ -24,6 +30,7 @@ export class JwtAuthGuard implements CanActivate {
       request.user = decoded;
       return true;
     } catch (err) {
+      Logger.error(err);
       throw new UnauthorizedException('Token inválido ou expirado');
     }
   }

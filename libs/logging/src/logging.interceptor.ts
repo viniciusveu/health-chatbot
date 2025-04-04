@@ -13,7 +13,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const type = context.getType();
 
     Logger.log('==========================\n');
-    
+
     if (type === 'http') {
       const req = context.switchToHttp().getRequest();
       Logger.log(`🌐 HTTP Request: ${req.method} ${req.url}`);
@@ -29,8 +29,6 @@ export class LoggingInterceptor implements NestInterceptor {
       Logger.log('📦 Payload:', data);
     }
 
-    return next.handle().pipe(
-      tap((res) => Logger.log('✅ Response:', res)),
-    );
+    return next.handle().pipe(tap((res) => Logger.log('✅ Response:', res)));
   }
 }

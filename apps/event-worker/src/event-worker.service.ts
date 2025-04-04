@@ -1,6 +1,6 @@
 import { QueueClient } from '@app/queue';
 import { EventDataDto } from '@app/shared/dtos';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class EventWorkerService {

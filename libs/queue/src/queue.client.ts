@@ -19,7 +19,7 @@ export class QueueClient implements OnModuleInit, OnModuleDestroy {
     try {
       Logger.log(`📤 Emitting pattern "${pattern}"`);
       Logger.log('📦 Payload:', JSON.stringify(data));
-      
+
       await this.client.emit(pattern, data);
     } catch (error) {
       Logger.error('❌ Error emitting event to queue:', error);
