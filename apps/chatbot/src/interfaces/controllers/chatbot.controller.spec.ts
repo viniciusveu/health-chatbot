@@ -3,6 +3,8 @@ import { ChatbotController } from './chatbot.controller';
 import { ConfirmAppointmentUseCase } from '../../application/use-cases/confirm-appointment.use-case';
 import { AppointmentCreatedUseCase } from '../../application/use-cases/appointment-created.use-case';
 import { MessageReceivedUseCase } from '../../application/use-cases/message-received.use-case';
+import { EventDataDto, ReceivedMessageDto } from '@app/shared/dtos';
+import { ContextOptions } from '@app/shared/enums';
 
 describe('ChatbotController', () => {
   let chatbotController: ChatbotController;
@@ -54,6 +56,39 @@ describe('ChatbotController', () => {
       expect(confirmAppointmentUseCase).toBeDefined();
       expect(appointmentCreatedUseCase).toBeDefined();
       expect(messageReceivedUseCase).toBeDefined();
+    });
+  });
+
+  describe('messageReceived', () => {
+    it('should call messageReceivedUseCase.execute with the correct message', async () => {
+      const message: ReceivedMessageDto = {
+        From: 'from',
+        Body: 'body',
+      };
+      await chatbotController.messageReceived(message);
+      expect(messageReceivedUseCase.execute).toHaveBeenCalledWith(message);
+    });
+  });
+
+  describe('appointmentCreated', () => {
+    it('should call appointmentCreatedUseCase.execute with the correct message', async () => {
+      const message: EventDataDto = {
+        event: ContextOptions.APPOINTMENT_CREATED,
+        appointmentId: 'some id',
+      };
+      await chatbotController.appointmentCreated(message);
+      expect(appointmentCreatedUseCase.execute).toHaveBeenCalledWith(message);
+    });
+  });
+
+  describe('confirmAppointment', () => {
+    it('should call confirmAppointmentUseCase.execute with the correct message', async () => {
+      const message: EventDataDto = {
+        event: ContextOptions.APPOINTMENT_CREATED,
+        appointmentId: 'some id',
+      };
+      await chatbotController.confirmAppointment(message);
+      expect(confirmAppointmentUseCase.execute).toHaveBeenCalledWith(message);
     });
   });
 });
