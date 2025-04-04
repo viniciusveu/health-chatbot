@@ -21,6 +21,12 @@ export class MessageWorkerService {
     const client = new Twilio(accountSid, authToken);
 
     try {
+      if (this.configService.getOrThrow('NODE_ENV') === 'test') {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        console.log('Msg sent to Twilio! (mock)')
+        return
+      }
+
       client.messages
         .create({
           from: 'whatsapp:' + process.env.TWILIO_PHONE_NUMBER,

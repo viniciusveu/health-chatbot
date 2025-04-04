@@ -5,8 +5,13 @@ import { ConfigService } from '@nestjs/config';
 export class GenAIApi {
   constructor(private readonly configService: ConfigService) {}
 
-  async generateContent(text: string): Promise<string> {
+  async generateContent(promptText: string): Promise<string> {
     try {
+      if (this.configService.getOrThrow('NODE_ENV') === 'test') {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        return `Resposta mockada para: ${promptText}`;
+      }
+
       const url =
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' +
         this.configService.getOrThrow('GOOGLE_API_KEY');
@@ -17,7 +22,7 @@ export class GenAIApi {
             {
               parts: [
                 {
-                  text: text,
+                  text: promptText,
                 },
               ],
             },
