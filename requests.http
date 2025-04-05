@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/
+POST http://localhost:3000/events/emit
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0MzgwMjI3NiwiZXhwIjoxNzQzODg4Njc2fQ.xlR6Xnr2mOYXnps5IZC46D7yqE01JptREAgY2duXo3A
 
@@ -21,7 +21,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsI
 
 ###
 
-POST http://localhost:3000/
+POST http://localhost:3000/events/emit
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0MzgwMjI3NiwiZXhwIjoxNzQzODg4Njc2fQ.xlR6Xnr2mOYXnps5IZC46D7yqE01JptREAgY2duXo3A
 
