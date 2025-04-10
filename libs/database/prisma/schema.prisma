@@ -8,65 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Ambulance {
-  plate_number String        @unique
-  status       String
-  location     String?
-  id           Int           @id @default(autoincrement())
-  Appointment  Appointment[]
+model Specialty {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  category            String
+  is_main             Boolean
+  description         String?
+  Physician_Specialty Physician_Specialty[]
 }
 
-model Appointment {
-  date_time           DateTime
+model Physician {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  phone               String
+  email               String
+  crm                 String                @unique
   status              String
-  reason              String
-  id                  Int                  @id @default(autoincrement())
-  physician_id        Int
-  ambulance_id        Int?
-  patient_id          Int
-  Ambulance           Ambulance?           @relation(fields: [ambulance_id], references: [id])
-  Patient             Patient              @relation(fields: [patient_id], references: [id])
-  Physician           Physician            @relation(fields: [physician_id], references: [id])
-  Appointment_Details Appointment_Details?
-  Feedback            Feedback[]
-  MessageLog          MessageLog[]
+  Physician_Specialty Physician_Specialty[]
+  Schedule            Schedule[]
+  Appointment         Appointment[]
 }
 
-model Appointment_Details {
-  exams          String?
-  prescriptions  String?
-  certificates   String?
-  recomendations String?
-  follow_up_date DateTime?
-  details        Json?
-  id             Int         @id @default(autoincrement())
-  appointment_id Int         @unique
-  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
-}
+model Physician_Specialty {
+  physician_id Int
+  specialty_id Int
+  Specialty    Specialty @relation(fields: [specialty_id], references: [id])
+  Physician    Physician @relation(fields: [physician_id], references: [id])
 
-model Feedback {
-  type           String
-  note           Float
-  comment        String?
-  id             Int         @id @default(autoincrement())
-  appointment_id Int
-  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model MessageLog {
-  context        String
-  msg_content    String
-  status         String
-  sent_at        DateTime
-  response       String?
-  msg_error      String?
-  id             Int          @id @default(autoincrement())
-  appointment_id Int?
-  Appointment    Appointment? @relation(fields: [appointment_id], references: [id])
+  @@id([physician_id, specialty_id])
 }
 
 model Patient {
+  id            Int           @id @default(autoincrement())
+  national_id   String        @unique
   name          String
   phone         String
   email         String
@@ -75,30 +49,54 @@ model Patient {
   address       String
   is_active     Boolean
   is_subscribed Boolean
-  id            Int           @id @default(autoincrement())
-  national_id   String        @unique
   Appointment   Appointment[]
 }
 
-model Physician {
-  name                String
-  phone               String
-  email               String
-  crm                 String                @unique
-  status              String
-  id                  Int                   @id @default(autoincrement())
-  Appointment         Appointment[]
-  Physician_Specialty Physician_Specialty[]
-  Schedule            Schedule[]
+model Ambulance {
+  id             Int          @id @default(autoincrement())
+  plate_number   String       @unique
+  status         String
+  location       String?
+  Appointment    Appointment[]
 }
 
-model Physician_Specialty {
-  physician_id Int
-  specialty_id Int
-  Physician    Physician @relation(fields: [physician_id], references: [id])
-  Specialty    Specialty @relation(fields: [specialty_id], references: [id])
+model MessageLog {
+  id             Int          @id @default(autoincrement())
+  type           String
+  status         String
+  context_type   String?
+  appointment_id Int?
+  received_at    DateTime?
+  sent_at        DateTime?
+  msg_content    String?
+  msg_error      String?
+  contact_info   String?
+  Appointment    Appointment? @relation(fields: [appointment_id], references: [id])
+}
 
-  @@id([physician_id, specialty_id])
+model Appointment {
+  id                  Int                  @id @default(autoincrement())
+  physician_id        Int
+  patient_id          Int
+  ambulance_id        Int?
+  date_time           DateTime
+  status              String
+  reason              String
+  Physician           Physician            @relation(fields: [physician_id], references: [id])
+  Patient             Patient              @relation(fields: [patient_id], references: [id])
+  Ambulance           Ambulance?           @relation(fields: [ambulance_id], references: [id])
+  Feedback            Feedback[]
+  MessageLog          MessageLog[]
+  Appointment_Details Appointment_Details?
+}
+
+model Feedback {
+  id             Int         @id @default(autoincrement())
+  appointment_id Int
+  type           String
+  note           Float
+  comment        String?
+  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
 }
 
 model Schedule {
@@ -110,11 +108,14 @@ model Schedule {
   Physician    Physician @relation(fields: [physician_id], references: [id])
 }
 
-model Specialty {
-  name                String
-  category            String
-  is_main             Boolean
-  description         String?
-  id                  Int                   @id @default(autoincrement())
-  Physician_Specialty Physician_Specialty[]
+model Appointment_Details {
+  id             Int         @id @default(autoincrement())
+  appointment_id Int         @unique
+  exams          String?
+  prescriptions  String?
+  certificates   String?
+  recomendations String?
+  follow_up_date DateTime?
+  details        Json?
+  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
 }

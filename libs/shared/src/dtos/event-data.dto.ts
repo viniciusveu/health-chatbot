@@ -1,7 +1,11 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { ContextOptions } from '../enums';
 
 export class EventDataDto {
+  @IsInt()
+  @IsOptional()
+  eventId?: number;
+
   @IsEnum(ContextOptions)
   event: ContextOptions;
 

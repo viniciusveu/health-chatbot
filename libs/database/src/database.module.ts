@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { KnexService } from './knex.service';
-import { AppointmentRepositoryPrisma } from './repositories/appointment.repository.prisma';
-import { AppointmentRepositoryKnex } from './repositories/appointment.repository.knex';
+import { AppointmentRepositoryPrisma } from './repositories/appointment/appointment.repository.prisma';
+import { AppointmentRepositoryKnex } from './repositories/appointment/appointment.repository.knex';
 import { RepositoryFactory } from './repository.factory';
+import { LoggingRepositoryPrisma } from './repositories/logging/logging.repository.prisma';
+import { LoggingRepositoryKnex } from './repositories/logging/logging.repository.knex';
 
 @Module({
   providers: [
@@ -20,8 +22,19 @@ import { RepositoryFactory } from './repository.factory';
       },
       inject: [PrismaService, KnexService],
     },
+    {
+      provide: 'LoggingRepository',
+      useFactory: (prisma: PrismaService, knex: KnexService) => {
+        if (process.env.DB_TYPE === 'prisma') {
+          return new LoggingRepositoryPrisma(prisma);
+        } else {
+          return new LoggingRepositoryKnex(knex);
+        }
+      },
+      inject: [PrismaService, KnexService],
+    },
     RepositoryFactory,
   ],
-  exports: ['AppointmentRepository', RepositoryFactory],
+  exports: ['AppointmentRepository', 'LoggingRepository', RepositoryFactory],
 })
 export class DatabaseModule {}

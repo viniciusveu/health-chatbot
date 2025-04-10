@@ -7,10 +7,12 @@ import { QueueModule } from '@app/queue';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@app/logging/logging.interceptor';
 import { AuthModule } from '@app/auth';
+import { LoggingModule } from '@app/logging';
 
 @Module({
   imports: [
     AuthModule,
+    LoggingModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env', 'apps/event-worker/.env'],

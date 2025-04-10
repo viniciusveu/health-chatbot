@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AppointmentRepositoryInterface } from './appointment.repository';
-import { KnexService } from '../knex.service';
+import { AppointmentRepositoryInterface } from './appointment.repository.interface';
+import { KnexService } from '../../knex.service';
 
 @Injectable()
 export class AppointmentRepositoryKnex

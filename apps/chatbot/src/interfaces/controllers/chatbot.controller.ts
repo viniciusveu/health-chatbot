@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ContextOptions } from '@app/shared/enums';
+import { ContextOptions, InternalContextOptions } from '@app/shared/enums';
 import { EventDataDto, ReceivedMessageDto } from '@app/shared/dtos';
 import { AppointmentCreatedUseCase } from '../../application/use-cases/appointment-created.use-case';
 import { ConfirmAppointmentUseCase } from '../../application/use-cases/confirm-appointment.use-case';
@@ -14,7 +14,7 @@ export class ChatbotController {
     private readonly messageReceivedUseCase: MessageReceivedUseCase,
   ) {}
 
-  @EventPattern(ContextOptions.MESSAGE_RECEIVED)
+  @EventPattern(InternalContextOptions.MESSAGE_RECEIVED)
   async messageReceived(@Payload() message: ReceivedMessageDto): Promise<void> {
     await this.messageReceivedUseCase.execute(message);
   }

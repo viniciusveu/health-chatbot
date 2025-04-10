@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { GenAIApi } from '../../infrastructure/providers/genai-api.provider';
 import { EventDataDto, MessageDataDto } from '@app/shared/dtos';
-import { ContextOptions } from '@app/shared/enums';
+import { InternalContextOptions } from '@app/shared/enums';
 import { AppointmentRepository } from '../../infrastructure/repositories/appointment.repository';
 import { QueueClient } from '@app/queue';
+import { LoggingService } from '@app/logging';
 
 @Injectable()
 export class AppointmentCreatedUseCase {
   constructor(
     private readonly appointmentRepository: AppointmentRepository,
+    private readonly loggingService: LoggingService,
     private readonly queueClient: QueueClient,
     private readonly generativeAI: GenAIApi,
   ) {}
@@ -37,12 +39,26 @@ export class AppointmentCreatedUseCase {
         End the message with the contact number for confirmations: 19998682834.`,
       );
 
+      await this.loggingService.eventProcessed({
+        id: data.eventId,
+        contactInfo: appointment.Patient.phone,
+        msgContent: generatedMessage,
+      });
+
       this.queueClient.emit(
-        ContextOptions.SEND_MESSAGE,
-        new MessageDataDto(generatedMessage, appointment.Patient.phone),
+        InternalContextOptions.SEND_MESSAGE,
+        new MessageDataDto(
+          generatedMessage,
+          appointment.Patient.phone,
+          data.eventId,
+        ),
       );
     } catch (error) {
       console.log(error);
+      await this.loggingService.eventProcessed({
+        id: data.eventId,
+        msgError: `${error}`,
+      });
     }
   }
 }

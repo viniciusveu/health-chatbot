@@ -62,6 +62,7 @@ describe('ChatbotController', () => {
   describe('messageReceived', () => {
     it('should call messageReceivedUseCase.execute with the correct message', async () => {
       const message: ReceivedMessageDto = {
+        eventId: 123,
         From: 'from',
         Body: 'body',
       };

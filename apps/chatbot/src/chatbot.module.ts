@@ -11,6 +11,7 @@ import { MessageReceivedUseCase } from './application/use-cases/message-received
 import { QueueModule } from '@app/queue';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@app/logging/logging.interceptor';
+import { LoggingModule } from '@app/logging';
 
 const USE_CASES = [
   AppointmentCreatedUseCase,
@@ -27,6 +28,7 @@ const USE_CASES = [
     }),
     QueueModule.register(QueuesEnum.MESSAGE_WORKER),
     DatabaseModule,
+    LoggingModule,
   ],
   controllers: [ChatbotController],
   providers: [

@@ -1,6 +1,7 @@
+import { LoggingService } from '@app/logging';
 import { QueueClient } from '@app/queue';
 import { MessageDataDto } from '@app/shared/dtos';
-import { ContextOptions } from '@app/shared/enums';
+import { InternalContextOptions } from '@app/shared/enums';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Twilio } from 'twilio';
@@ -8,6 +9,7 @@ import { Twilio } from 'twilio';
 @Injectable()
 export class MessageWorkerService {
   constructor(
+    private readonly loggingService: LoggingService,
     private readonly queueClient: QueueClient,
     private readonly configService: ConfigService,
   ) {}
@@ -23,8 +25,9 @@ export class MessageWorkerService {
     try {
       if (this.configService.getOrThrow('NODE_ENV') === 'test') {
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        console.log('Msg sent to Twilio! (mock)')
-        return
+        console.log('Msg sent to Twilio! (mock)');
+        await this.loggingService.messageSent({ id: data.eventId });
+        return;
       }
 
       client.messages
@@ -34,7 +37,13 @@ export class MessageWorkerService {
           body: data.message,
         })
         .then((message) => console.log('Mensagem enviada:', message.sid));
+
+      await this.loggingService.messageSent({ id: data.eventId });
     } catch (error) {
+      await this.loggingService.messageSent({
+        id: data.eventId,
+        msgError: `${error}`,
+      });
       console.error('Erro ao enviar mensagem:', error);
     }
   }
@@ -52,7 +61,15 @@ export class MessageWorkerService {
     }
 
     try {
-      this.queueClient.emit(ContextOptions.MESSAGE_RECEIVED, { From, Body });
+      const eventId = await this.loggingService.messageReceived({
+        body: Body,
+        from: From,
+      });
+      this.queueClient.emit(InternalContextOptions.MESSAGE_RECEIVED, {
+        From,
+        Body,
+        eventId,
+      });
     } catch (error) {
       throw error;
     }
