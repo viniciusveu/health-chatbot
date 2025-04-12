@@ -1,19 +1,33 @@
 ###
 
-POST http://localhost:3001/
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
+    "userId": "teste",
+    "name": "teste"
+}
+
+###
+
+POST http://localhost:3000/events/emit
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0MzgwMjI3NiwiZXhwIjoxNzQzODg4Njc2fQ.xlR6Xnr2mOYXnps5IZC46D7yqE01JptREAgY2duXo3A
+
+{
+    "event": "appointment-created",
+    "appointmentId": "1"
+}
+
+###
+
+POST http://localhost:3000/events/emit
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0MzgwMjI3NiwiZXhwIjoxNzQzODg4Njc2fQ.xlR6Xnr2mOYXnps5IZC46D7yqE01JptREAgY2duXo3A
+
+{
     "event": "confirm-appointment",
-    "patientId": "21",
-    "data": {
-        "name": "Enzo Doe",
-        "phone": "1234567890",
-        "age": 19,
-        "gender": "M",
-        "date": "2020-01-01",
-        "time": "10:00"
-    }
+    "appointmentId": "1"
 }
 
 ###

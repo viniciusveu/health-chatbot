@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Specialty {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  category            String
+  is_main             Boolean
+  description         String?
+  Physician_Specialty Physician_Specialty[]
+}
+
+model Physician {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  phone               String
+  email               String
+  crm                 String                @unique
+  status              String
+  Physician_Specialty Physician_Specialty[]
+  Schedule            Schedule[]
+  Appointment         Appointment[]
+}
+
+model Physician_Specialty {
+  physician_id Int
+  specialty_id Int
+  Specialty    Specialty @relation(fields: [specialty_id], references: [id])
+  Physician    Physician @relation(fields: [physician_id], references: [id])
+
+  @@id([physician_id, specialty_id])
+}
+
+model Patient {
+  id            Int           @id @default(autoincrement())
+  national_id   String        @unique
+  name          String
+  phone         String
+  email         String
+  birthdate     DateTime
+  gender        String
+  address       String
+  is_active     Boolean
+  is_subscribed Boolean
+  Appointment   Appointment[]
+}
+
+model Ambulance {
+  id             Int          @id @default(autoincrement())
+  plate_number   String       @unique
+  status         String
+  location       String?
+  Appointment    Appointment[]
+}
+
+model MessageLog {
+  id             Int          @id @default(autoincrement())
+  type           String
+  status         String
+  context_type   String?
+  appointment_id Int?
+  received_at    DateTime?
+  sent_at        DateTime?
+  msg_content    String?
+  msg_error      String?
+  contact_info   String?
+  Appointment    Appointment? @relation(fields: [appointment_id], references: [id])
+}
+
+model Appointment {
+  id                  Int                  @id @default(autoincrement())
+  physician_id        Int
+  patient_id          Int
+  ambulance_id        Int?
+  date_time           DateTime
+  status              String
+  reason              String
+  Physician           Physician            @relation(fields: [physician_id], references: [id])
+  Patient             Patient              @relation(fields: [patient_id], references: [id])
+  Ambulance           Ambulance?           @relation(fields: [ambulance_id], references: [id])
+  Feedback            Feedback[]
+  MessageLog          MessageLog[]
+  Appointment_Details Appointment_Details?
+}
+
+model Feedback {
+  id             Int         @id @default(autoincrement())
+  appointment_id Int
+  type           String
+  note           Float
+  comment        String?
+  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
+}
+
+model Schedule {
+  id           Int       @id @default(autoincrement())
+  physician_id Int
+  date         DateTime
+  time_slot    Int
+  status       String
+  Physician    Physician @relation(fields: [physician_id], references: [id])
+}
+
+model Appointment_Details {
+  id             Int         @id @default(autoincrement())
+  appointment_id Int         @unique
+  exams          String?
+  prescriptions  String?
+  certificates   String?
+  recomendations String?
+  follow_up_date DateTime?
+  details        Json?
+  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
+}

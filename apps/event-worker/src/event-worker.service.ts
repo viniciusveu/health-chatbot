@@ -1,15 +1,33 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { EventDataDto } from './dtos/event-data.dto';
+import { LoggingService } from '@app/logging';
+import { QueueClient } from '@app/queue';
+import { EventDataDto } from '@app/shared/dtos';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class EventWorkerService {
-  constructor(@Inject('EVENT_WORKER') private readonly rabbitClient: ClientProxy) {}
+  constructor(
+    private readonly queueClient: QueueClient,
+    private readonly loggingService: LoggingService,
+  ) {}
 
-  emitEvent(data: EventDataDto): void {
+  async emitEvent(data: EventDataDto): Promise<void> {
+    if (!data) {
+      throw new Error('EventDataDto is null or undefined');
+    }
+
     const event = data.event;
-    delete data.event;
-    
-    this.rabbitClient.emit(event, data);
+    if (!event) {
+      throw new Error('Event is null or undefined');
+    }
+
+    try {
+      const eventId = await this.loggingService.eventReceived({
+        appointmentId: +data.appointmentId,
+        contextType: event,
+      });
+      await this.queueClient.emit(event, { eventId, ...data });
+    } catch (error) {
+      throw error;
+    }
   }
 }

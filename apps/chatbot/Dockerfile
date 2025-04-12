@@ -9,6 +9,6 @@ RUN npm install @nestjs/cli --global
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD [ "nest", "start", "chatbot","--watch" ]
+CMD [ "nest", "start", "chatbot", "--watch" ]

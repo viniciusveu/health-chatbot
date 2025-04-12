@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { EventWorkerModule } from './event-worker.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(EventWorkerModule);
-  await app.listen(process.env.port ?? 3001);
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(process.env.EVENT_WORKER_PORT ?? 3000);
 }
-bootstrap();
+bootstrap().catch((error) => console.log(error));

@@ -1,13 +1,20 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MessageWorkerService } from './message-worker.service';
 import { EventPattern } from '@nestjs/microservices';
+import { InternalContextOptions } from '@app/shared/enums';
+import { MessageDataDto, ReceivedMessageDto } from '@app/shared/dtos';
 
-@Controller()
+@Controller('messages')
 export class MessageWorkerController {
   constructor(private readonly messageWorkerService: MessageWorkerService) {}
 
-  @EventPattern('send-message')
-  sendMessage(msg: any): void {
-    this.messageWorkerService.sendMessage(msg);
+  @EventPattern(InternalContextOptions.SEND_MESSAGE)
+  async sendMessage(data: MessageDataDto): Promise<void> {
+    await this.messageWorkerService.sendMessage(data);
+  }
+
+  @Post('webhook')
+  async receiveMessage(@Body() data: ReceivedMessageDto): Promise<void> {
+    await this.messageWorkerService.receiveMessage(data.From, data.Body);
   }
 }
