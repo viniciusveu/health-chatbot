@@ -16,7 +16,7 @@ health-chatbot/
 ├── apps/
 │   ├── chatbot/         # Serviço principal de chatbot com lógica de envio e geração de mensagens
 │   ├── event-worker/    # Serviço que processa eventos do sistema e transforma em comandos
-│   └── message-worker/  # Serviço responsável por enviar mensagens
+│   └── message-worker/  # Serviço responsável por enviar e receber mensagens dos usuários
 │
 ├── libs/
 │   ├── auth/            # Biblioteca de autenticação
