@@ -11,4 +11,4 @@ COPY . .
 
 RUN npm run build
 
-CMD [ "nest", "start", "chatbot", "--watch" ]
+CMD [ "nest", "start", "chatbot-core", "--watch" ]

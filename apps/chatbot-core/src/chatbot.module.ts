@@ -24,7 +24,7 @@ const USE_CASES = [
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', 'apps/chatbot/.env'],
+      envFilePath: ['.env', 'apps/chatbot-core/.env'],
     }),
     QueueModule.register(QueuesEnum.MESSAGE_WORKER),
     DatabaseModule,

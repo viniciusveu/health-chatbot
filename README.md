@@ -14,7 +14,7 @@ Este projeto é um chatbot modular e escalável para comunicação automatizada 
 health-chatbot/
 │
 ├── apps/
-│   ├── chatbot/         # Serviço principal de chatbot com lógica de envio e geração de mensagens
+│   ├── chatbot-core/    # Serviço principal de chatbot com lógica de envio e geração de mensagens
 │   ├── event-worker/    # Serviço que processa eventos do sistema e transforma em comandos
 │   └── message-worker/  # Serviço responsável por enviar e receber mensagens dos usuários
 │
@@ -36,13 +36,13 @@ health-chatbot/
 
 O repositório é um monorepo baseado em NestJS, com três serviços principais:
 
-- `chatbot`
+- `chatbot-core`
 - `event-worker`
 - `message-worker`
 
 O **event-worker** expõe uma API pública para receber eventos externos de sistemas integrados (CRM, ERP, sistemas de agendamento etc). Esses eventos são enviados para uma fila identificada por tópicos definidos em `ContextOptions`.
 
-O **chatbot** é o serviço principal, desenvolvido com clean architecture. Ele consome eventos, executa casos de uso, acessa dados e gera mensagens personalizadas. Também se comunica com as filas internas definidas por `InternalContextOptions`, como `send-message` e `message-received`.
+O **chatbot-core** é o serviço principal, desenvolvido com clean architecture. Ele consome eventos, executa casos de uso, acessa dados e gera mensagens personalizadas. Também se comunica com as filas internas definidas por `InternalContextOptions`, como `send-message` e `message-received`.
 
 O **message-worker** lida com o envio e o recebimento de mensagens com usuários via APIs externas como o Twilio. Ele publica mensagens recebidas em `message-received` e consome de `send-message` para disparo.
 
@@ -85,7 +85,7 @@ docker-compose up --build
 
 ## 🧠 Adicionando Novas Funcionalidades
 
-1. Crie um novo caso de uso em `apps/chatbot/src/application/use-cases/`
+1. Crie um novo caso de uso em `apps/chatbot-core/src/application/use-cases/`
 2. Adicione um novo evento no enum `ContextOptions`
 4. Teste e documente a nova funcionalidade
 
