@@ -27,7 +27,7 @@ export class EventWorkerService {
       });
       await this.queueClient.emit(event, { eventId, ...data });
     } catch (error) {
-      throw error;
+      throw new Error('Error while emitting event');
     }
   }
 }

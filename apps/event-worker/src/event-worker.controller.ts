@@ -9,7 +9,7 @@ export class EventWorkerController {
 
   @Post('emit')
   @UseGuards(JwtAuthGuard)
-  emitEvent(@Body() data: EventDataDto): void {
-    this.eventWorkerService.emitEvent(data);
+  async emitEvent(@Body() data: EventDataDto): Promise<void> {
+    await this.eventWorkerService.emitEvent(data);
   }
 }

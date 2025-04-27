@@ -25,7 +25,7 @@ export class ConfirmAppointmentUseCase {
         throw new Error('Agendamento não encontrado.');
       }
 
-      const generatedMessage = await this.generativeAI.generateContent(
+      const textPrompt = 
         `Generate a short, natural-sounding WhatsApp message in Portuguese, confirming that the patient's appointment has been successfully confirmed. The message should be friendly yet professional and must not contain sensitive or personal data.
 
         Use the following details:
@@ -36,8 +36,9 @@ export class ConfirmAppointmentUseCase {
 
         Let the patient know that their appointment is confirmed and that they can reach out if they need to reschedule or have any questions.
 
-        End the message with the contact number for assistance: 19998682834.`,
-      );
+        End the message with the contact number for assistance: 19998682834.`
+
+      const generatedMessage = await this.generativeAI.generateContent(textPrompt);
 
       await this.loggingService.eventProcessed({
         id: data.eventId,
