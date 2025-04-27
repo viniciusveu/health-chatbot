@@ -62,6 +62,7 @@ model Ambulance {
 
 model MessageLog {
   id             Int          @id @default(autoincrement())
+  sid            String?
   type           String
   status         String
   context_type   String?

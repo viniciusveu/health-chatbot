@@ -57,11 +57,12 @@ export class LoggingService {
     }
   }
 
-  async messageSent({ id, msgError }: Partial<LogDto>): Promise<void> {
+  async messageSent({ id, sid, msgError }: Partial<LogDto>): Promise<void> {
     try {
       const logToUpdate: any = {
         status: LogStatus.MESSAGE_SENT,
         sent_at: new Date(),
+        sid,
       };
 
       if (msgError) {

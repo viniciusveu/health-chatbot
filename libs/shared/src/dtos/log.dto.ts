@@ -2,6 +2,7 @@ import { ContextOptions, LogStatus, LogType } from '../enums';
 
 export class LogDto {
   id?: number;
+  sid?: string;
   type: LogType;
   status: LogStatus;
   contextType?: ContextOptions;

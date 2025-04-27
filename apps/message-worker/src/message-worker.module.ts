@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { QueuesEnum } from '@app/shared/enums';
 import { QueueModule } from '@app/queue';
 import { LoggingModule } from '@app/logging';
+import { TwilioService } from './twilio.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { LoggingModule } from '@app/logging';
     LoggingModule,
   ],
   controllers: [MessageWorkerController],
-  providers: [MessageWorkerService],
+  providers: [MessageWorkerService, TwilioService],
 })
 export class MessageWorkerModule {}
