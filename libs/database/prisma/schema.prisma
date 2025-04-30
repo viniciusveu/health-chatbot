@@ -65,14 +65,14 @@ model MessageLog {
   sid            String?
   type           String
   status         String
-  context_type   String?
-  appointment_id Int?
-  received_at    DateTime?
-  sent_at        DateTime?
-  msg_content    String?
-  msg_error      String?
-  contact_info   String?
-  Appointment    Appointment? @relation(fields: [appointment_id], references: [id])
+  contextType    String?      @map("context_type")
+  appointmentId  Int?         @map("appointment_id")
+  receivedAt     DateTime?    @map("received_at")
+  sentAt         DateTime?    @map("sent_at")
+  msgContent     String?      @map("msg_content")
+  msgError       String?      @map("msg_error")
+  contactInfo    String?      @map("contact_info")
+  Appointment    Appointment? @relation(fields: [appointmentId], references: [id])
 }
 
 model Appointment {
@@ -92,12 +92,12 @@ model Appointment {
 }
 
 model Feedback {
-  id             Int         @id @default(autoincrement())
-  appointment_id Int
+  id             Int          @id @default(autoincrement())
+  appointmentId  Int          @map("appointment_id")
   type           String
-  note           Float
+  rating         Float
   comment        String?
-  Appointment    Appointment @relation(fields: [appointment_id], references: [id])
+  Appointment    Appointment @relation(fields: [appointmentId], references: [id])
 }
 
 model Schedule {

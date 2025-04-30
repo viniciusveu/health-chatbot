@@ -8,11 +8,17 @@ export class LoggingRepository implements LoggingRepositoryInterface {
   constructor(private readonly repositoryFactory: RepositoryFactory) {}
 
   async update(id: number, data: Partial<LogDto>): Promise<void> {
-    const repo = this.repositoryFactory.getLogginRepository();
+    const repo = this.repositoryFactory.getLoggingRepository();
     await repo.update(id, data);
   }
+
   create(data: Partial<LogDto>): Promise<number> {
-    const repo = this.repositoryFactory.getLogginRepository();
+    const repo = this.repositoryFactory.getLoggingRepository();
     return repo.create(data);
+  }
+  
+  findByContactInfo(contactInfo: string): Promise<LogDto[]> {
+    const repo = this.repositoryFactory.getLoggingRepository();
+    return repo.findByContactInfo(contactInfo);
   }
 }

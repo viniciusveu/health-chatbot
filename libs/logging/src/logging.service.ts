@@ -7,6 +7,15 @@ import { LogType, LogStatus } from '@app/shared/enums';
 export class LoggingService {
   constructor(private readonly loggingRepository: LoggingRepository) {}
 
+  async getLastLogByContactInfo(contactNumber: string): Promise<LogDto> {
+    try {
+      const logs = await this.loggingRepository.findByContactInfo(contactNumber);
+      return logs[logs.length - 1];
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async eventReceived({
     appointmentId,
     contextType,
@@ -16,13 +25,13 @@ export class LoggingService {
       const logToCreate: any = {
         type: LogType.INFO,
         status: LogStatus.EVENT_RECEIVED,
-        appointment_id: appointmentId,
-        context_type: contextType,
-        received_at: new Date(),
+        appointmentId,
+        contextType,
+        receivedAt: new Date(),
       };
 
       if (msgError) {
-        logToCreate.msg_error = msgError;
+        logToCreate.msgError = msgError;
         logToCreate.type = LogType.ERROR;
       }
 
@@ -35,19 +44,19 @@ export class LoggingService {
 
   async eventProcessed({
     id,
-    contactInfo,
     msgContent,
     msgError,
+    contactInfo,
   }: Partial<LogDto>): Promise<void> {
     try {
       const logToUpdate: any = {
         status: LogStatus.EVENT_PROCESSED,
-        msg_content: msgContent,
-        contact_info: contactInfo,
+        msgContent,
+        contactInfo,
       };
 
       if (msgError) {
-        logToUpdate.msg_error = msgError;
+        logToUpdate.msgError = msgError;
         logToUpdate.type = LogType.ERROR;
       }
 
@@ -61,12 +70,12 @@ export class LoggingService {
     try {
       const logToUpdate: any = {
         status: LogStatus.MESSAGE_SENT,
-        sent_at: new Date(),
+        sentAt: new Date(),
         sid,
       };
 
       if (msgError) {
-        logToUpdate.msg_error = msgError;
+        logToUpdate.msgError = msgError;
         logToUpdate.type = LogType.ERROR;
       }
 
@@ -85,13 +94,13 @@ export class LoggingService {
       const logToCreate: any = {
         type: LogType.INFO,
         status: LogStatus.MESSAGE_RECEIVED,
-        contact_info: msgData.from,
-        msg_content: msgData.body,
-        received_at: new Date(),
+        contactInfo: msgData.from,
+        msgContent: msgData.body,
+        receivedAt: new Date(),
       };
 
       if (msgData.msgError) {
-        logToCreate.msg_error = msgData.msgError;
+        logToCreate.msgError = msgData.msgError;
         logToCreate.type = LogType.ERROR;
       }
 
@@ -111,9 +120,8 @@ export class LoggingService {
     try {
       const logToUpdate: any = {
         status: LogStatus.MESSAGE_PROCESSED,
-        context_type: contextType,
-        appointment_id: appointmentId,
-        sent_at: new Date(),
+        contextType,
+        appointmentId,
       };
 
       if (msgError) {

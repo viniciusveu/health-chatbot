@@ -4,6 +4,7 @@ import { MessageDataDto } from '@app/shared/dtos';
 import { InternalContextOptions } from '@app/shared/enums';
 import { Injectable, Logger } from '@nestjs/common';
 import { TwilioService } from './twilio.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MessageWorkerService {
@@ -11,18 +12,19 @@ export class MessageWorkerService {
     private readonly loggingService: LoggingService,
     private readonly queueClient: QueueClient,
     private readonly twilioService: TwilioService,
+    private readonly configService: ConfigService,
   ) {}
 
   async sendMessage(data: MessageDataDto): Promise<void> {
     console.log('Sending msg: ', data);
 
     try {
-      // if (this.configService.getOrThrow('NODE_ENV') === 'test') {
-      //   await new Promise((resolve) => setTimeout(resolve, 3000));
-      //   console.log('Msg sent to Twilio! (mock)');
-      //   await this.loggingService.messageSent({ id: data.eventId, sid: 'mock' });
-      //   return;
-      // }
+      if (this.configService.getOrThrow('NODE_ENV') === 'test') {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        console.log('Msg sent to Twilio! (mock)');
+        await this.loggingService.messageSent({ id: data.eventId, sid: 'mock' });
+        return;
+      }
 
       const msgSid = await this.twilioService.sendWhatsappMessage(
         data.contact,
