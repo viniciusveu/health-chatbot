@@ -15,4 +15,11 @@ export class LoggingRepositoryKnex implements LoggingRepositoryInterface {
   async update(id: number, data: Partial<LogDto>): Promise<void> {
     await this.knexService.db('msgLogging').update(id, data);
   }
+
+  async findByContactInfo(contactInfo: string): Promise<LogDto[]> {
+    const logs = await this.knexService
+      .db('msgLogging')
+      .where({ contactInfo, msgError: null });
+    return logs;
+  }
 }

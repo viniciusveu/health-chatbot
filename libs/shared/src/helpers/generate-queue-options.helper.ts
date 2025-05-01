@@ -1,6 +1,6 @@
 export function generateQueueOptions(
   queueName: string,
-  ttl: number = 600_000,
+  ttl: number = 120_000,
 ): Record<string, any> {
   return {
     urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],

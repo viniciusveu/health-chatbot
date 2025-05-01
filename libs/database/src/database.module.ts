@@ -6,6 +6,8 @@ import { AppointmentRepositoryKnex } from './repositories/appointment/appointmen
 import { RepositoryFactory } from './repository.factory';
 import { LoggingRepositoryPrisma } from './repositories/logging/logging.repository.prisma';
 import { LoggingRepositoryKnex } from './repositories/logging/logging.repository.knex';
+import { FeedbackRepositoryPrisma } from './repositories/feedback/feedback.repository.prisma';
+import { FeedbackRepositoryKnex } from './repositories/feedback/feedback.repository.knex';
 
 @Module({
   providers: [
@@ -33,8 +35,24 @@ import { LoggingRepositoryKnex } from './repositories/logging/logging.repository
       },
       inject: [PrismaService, KnexService],
     },
+    {
+      provide: 'FeedbackRepository',
+      useFactory: (prisma: PrismaService, knex: KnexService) => {
+        if (process.env.DB_TYPE === 'prisma') {
+          return new FeedbackRepositoryPrisma(prisma);
+        } else {
+          return new FeedbackRepositoryKnex(knex);
+        }
+      },
+      inject: [PrismaService, KnexService],
+    },
     RepositoryFactory,
   ],
-  exports: ['AppointmentRepository', 'LoggingRepository', RepositoryFactory],
+  exports: [
+    'AppointmentRepository',
+    'LoggingRepository',
+    'FeedbackRepository',
+    RepositoryFactory,
+  ],
 })
 export class DatabaseModule {}

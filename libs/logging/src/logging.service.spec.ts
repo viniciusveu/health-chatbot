@@ -18,7 +18,7 @@ describe('LoggingService', () => {
     };
 
     const mockRepositoryFactory = {
-      getLogginRepository: () => mockLoggingRepository,
+      getLoggingRepository: () => mockLoggingRepository,
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -50,9 +50,9 @@ describe('LoggingService', () => {
       const expectedLog = {
         type: LogType.INFO,
         status: LogStatus.EVENT_RECEIVED,
-        appointment_id: 1,
-        context_type: ContextOptions.APPOINTMENT_CREATED,
-        received_at: expect.any(Date),
+        appointmentId: 1,
+        contextType: ContextOptions.APPOINTMENT_CREATED,
+        receivedAt: expect.any(Date),
       };
       (mockLoggingRepository.create as jest.Mock).mockResolvedValue(1);
 
@@ -73,10 +73,10 @@ describe('LoggingService', () => {
       const expectedLog = {
         type: LogType.ERROR,
         status: LogStatus.EVENT_RECEIVED,
-        appointment_id: 1,
-        context_type: ContextOptions.APPOINTMENT_CREATED,
-        received_at: expect.any(Date),
-        msg_error: 'error',
+        appointmentId: 1,
+        contextType: ContextOptions.APPOINTMENT_CREATED,
+        receivedAt: expect.any(Date),
+        msgError: 'error',
       };
       (mockLoggingRepository.create as jest.Mock).mockResolvedValue(1);
 
@@ -109,8 +109,8 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.EVENT_PROCESSED,
-        msg_content: 'test',
-        contact_info: 'test',
+        msgContent: 'test',
+        contactInfo: 'test',
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
 
@@ -131,9 +131,9 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.EVENT_PROCESSED,
-        msg_content: 'test',
-        contact_info: 'test',
-        msg_error: 'error',
+        msgContent: 'test',
+        contactInfo: 'test',
+        msgError: 'error',
         type: LogType.ERROR,
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
@@ -167,7 +167,7 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.MESSAGE_SENT,
-        sent_at: expect.any(Date),
+        sentAt: expect.any(Date),
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
 
@@ -186,8 +186,8 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.MESSAGE_SENT,
-        sent_at: expect.any(Date),
-        msg_error: 'error',
+        sentAt: expect.any(Date),
+        msgError: 'error',
         type: LogType.ERROR,
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
@@ -221,9 +221,9 @@ describe('LoggingService', () => {
       const expectedLog = {
         type: LogType.INFO,
         status: LogStatus.MESSAGE_RECEIVED,
-        contact_info: 'test',
-        msg_content: 'test',
-        received_at: expect.any(Date),
+        contactInfo: 'test',
+        msgContent: 'test',
+        receivedAt: expect.any(Date),
       };
       (mockLoggingRepository.create as jest.Mock).mockResolvedValue(1);
 
@@ -244,10 +244,10 @@ describe('LoggingService', () => {
       const expectedLog = {
         type: LogType.ERROR,
         status: LogStatus.MESSAGE_RECEIVED,
-        contact_info: 'test',
-        msg_content: 'test',
-        received_at: expect.any(Date),
-        msg_error: 'error',
+        contactInfo: 'test',
+        msgContent: 'test',
+        receivedAt: expect.any(Date),
+        msgError: 'error',
       };
       (mockLoggingRepository.create as jest.Mock).mockResolvedValue(1);
 
@@ -280,9 +280,8 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.MESSAGE_PROCESSED,
-        context_type: ContextOptions.APPOINTMENT_CREATED,
-        appointment_id: 1,
-        sent_at: expect.any(Date),
+        contextType: ContextOptions.APPOINTMENT_CREATED,
+        appointmentId: 1,
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
 
@@ -303,10 +302,9 @@ describe('LoggingService', () => {
       };
       const expectedLog = {
         status: LogStatus.MESSAGE_PROCESSED,
-        context_type: ContextOptions.APPOINTMENT_CREATED,
-        appointment_id: 1,
-        sent_at: expect.any(Date),
-        msg_error: 'error',
+        contextType: ContextOptions.APPOINTMENT_CREATED,
+        appointmentId: 1,
+        msgError: 'error',
         type: LogType.ERROR,
       };
       (mockLoggingRepository.update as jest.Mock).mockResolvedValue(undefined);
