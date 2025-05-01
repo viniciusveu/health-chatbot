@@ -71,13 +71,15 @@ describe('LoggingRepository', () => {
   describe('findByContactInfo', () => {
     it('should call the repository findByContactInfo method', async () => {
       const contactInfo = '123456789';
-      (mockLoggingRepository.findByContactInfo as jest.Mock).mockResolvedValue(undefined);
+      (mockLoggingRepository.findByContactInfo as jest.Mock).mockResolvedValue(
+        undefined,
+      );
 
       await repository.findByContactInfo(contactInfo);
 
-      expect(mockLoggingRepository.findByContactInfo).toHaveBeenCalledWith(contactInfo);
+      expect(mockLoggingRepository.findByContactInfo).toHaveBeenCalledWith(
+        contactInfo,
+      );
     });
   });
-
-      
 });

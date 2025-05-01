@@ -17,7 +17,9 @@ export class LoggingRepositoryKnex implements LoggingRepositoryInterface {
   }
 
   async findByContactInfo(contactInfo: string): Promise<LogDto[]> {
-    const logs = await this.knexService.db('msgLogging').where({ contactInfo, msgError: null });
+    const logs = await this.knexService
+      .db('msgLogging')
+      .where({ contactInfo, msgError: null });
     return logs;
   }
 }

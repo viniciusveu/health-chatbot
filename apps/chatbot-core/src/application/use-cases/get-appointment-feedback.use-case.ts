@@ -25,8 +25,7 @@ export class GetAppointmentFeedbackUseCase {
         throw new Error('Agendamento não encontrado.');
       }
 
-      const textPrompt = 
-        `Generate a short, natural-sounding WhatsApp message in Portuguese asking the people how much they like the consultation from 0 to 5. 
+      const textPrompt = `Generate a short, natural-sounding WhatsApp message in Portuguese asking the people how much they like the consultation from 0 to 5. 
         
         Use the following details:
         - Patient's first name: ${appointment.Patient.name}
@@ -36,7 +35,8 @@ export class GetAppointmentFeedbackUseCase {
         
         The message should be friendly yet professional and must not contain sensitive or personal data.`;
 
-      const generatedMessage = await this.generativeAI.generateContent(textPrompt);
+      const generatedMessage =
+        await this.generativeAI.generateContent(textPrompt);
 
       await this.loggingService.eventProcessed({
         id: data.eventId,

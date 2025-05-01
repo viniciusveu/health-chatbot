@@ -16,7 +16,10 @@ export class AppointmentRepositoryPrisma
     });
   }
 
-  async changeStatusById(appointmentId: number, status: AppointmentStatus): Promise<any> {
+  async changeStatusById(
+    appointmentId: number,
+    status: AppointmentStatus,
+  ): Promise<any> {
     return this.prisma.appointment.update({
       where: { id: appointmentId },
       data: { status },

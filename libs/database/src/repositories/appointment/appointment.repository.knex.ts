@@ -16,11 +16,13 @@ export class AppointmentRepositoryKnex
       .first();
   }
 
-  async changeStatusById(appointmentId: number, status: AppointmentStatus): Promise<any> {
+  async changeStatusById(
+    appointmentId: number,
+    status: AppointmentStatus,
+  ): Promise<any> {
     return await this.knexService
       .db('appointments')
       .where({ id: appointmentId })
       .update({ status });
   }
-    
 }

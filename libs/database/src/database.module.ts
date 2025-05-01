@@ -48,6 +48,11 @@ import { FeedbackRepositoryKnex } from './repositories/feedback/feedback.reposit
     },
     RepositoryFactory,
   ],
-  exports: ['AppointmentRepository', 'LoggingRepository', 'FeedbackRepository',RepositoryFactory],
+  exports: [
+    'AppointmentRepository',
+    'LoggingRepository',
+    'FeedbackRepository',
+    RepositoryFactory,
+  ],
 })
 export class DatabaseModule {}

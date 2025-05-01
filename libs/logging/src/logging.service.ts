@@ -9,7 +9,8 @@ export class LoggingService {
 
   async getLastLogByContactInfo(contactNumber: string): Promise<LogDto> {
     try {
-      const logs = await this.loggingRepository.findByContactInfo(contactNumber);
+      const logs =
+        await this.loggingRepository.findByContactInfo(contactNumber);
       return logs[logs.length - 1];
     } catch (error) {
       throw new Error(error);

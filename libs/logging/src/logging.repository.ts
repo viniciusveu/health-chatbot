@@ -16,7 +16,7 @@ export class LoggingRepository implements LoggingRepositoryInterface {
     const repo = this.repositoryFactory.getLoggingRepository();
     return repo.create(data);
   }
-  
+
   findByContactInfo(contactInfo: string): Promise<LogDto[]> {
     const repo = this.repositoryFactory.getLoggingRepository();
     return repo.findByContactInfo(contactInfo);

@@ -1,4 +1,4 @@
-import { Feedback } from "@prisma/client";
+import { Feedback } from '@prisma/client';
 
 export interface FeedbackRepositoryInterface {
   create(data: Feedback): Promise<number>;

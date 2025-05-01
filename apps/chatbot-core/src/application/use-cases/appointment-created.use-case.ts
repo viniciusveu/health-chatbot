@@ -25,8 +25,7 @@ export class AppointmentCreatedUseCase {
         throw new Error('Agendamento não encontrado.');
       }
 
-      const textPrompt = 
-        `Generate a short, natural-sounding WhatsApp message in Portuguese, alerting a newly scheduled medical appointment. 
+      const textPrompt = `Generate a short, natural-sounding WhatsApp message in Portuguese, alerting a newly scheduled medical appointment. 
       
         Use the following details:
         - Patient's first name: ${appointment.Patient.name}
@@ -39,7 +38,8 @@ export class AppointmentCreatedUseCase {
       
         End the message with the contact number in case of assistance (0500).`;
 
-      const generatedMessage = await this.generativeAI.generateContent(textPrompt);
+      const generatedMessage =
+        await this.generativeAI.generateContent(textPrompt);
 
       await this.loggingService.eventProcessed({
         id: data.eventId,

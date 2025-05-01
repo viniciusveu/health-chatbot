@@ -4,7 +4,7 @@ import { AppointmentStatus } from '@app/shared/enums';
 
 @Injectable()
 export class AppointmentRepository {
-  constructor(private readonly repositoryFactory: RepositoryFactory) { }
+  constructor(private readonly repositoryFactory: RepositoryFactory) {}
 
   async getAppointmentById(appointmentId: string) {
     const repo = this.repositoryFactory.getAppointmentRepository();

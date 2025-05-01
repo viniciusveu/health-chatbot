@@ -112,8 +112,9 @@ describe('ChatbotController', () => {
         appointmentId: 'some id',
       };
       await chatbotController.getAppointmentFeedback(message);
-      expect(getAppointmentFeedbackUseCase.execute).toHaveBeenCalledWith(message);
+      expect(getAppointmentFeedbackUseCase.execute).toHaveBeenCalledWith(
+        message,
+      );
     });
   });
-  
 });

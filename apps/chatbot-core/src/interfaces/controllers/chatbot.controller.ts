@@ -32,7 +32,9 @@ export class ChatbotController {
   }
 
   @EventPattern(ContextOptions.COLLECT_FEEDBACK)
-  async getAppointmentFeedback(@Payload() message: EventDataDto): Promise<void> {
+  async getAppointmentFeedback(
+    @Payload() message: EventDataDto,
+  ): Promise<void> {
     await this.getAppointmentFeedbackUseCase.execute(message);
   }
 }

@@ -20,5 +20,4 @@ export class LoggingRepositoryPrisma implements LoggingRepositoryInterface {
     });
     return logs as LogDto[];
   }
-
 }

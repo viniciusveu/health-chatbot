@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZSIsIm5hbWUiOiJ0ZXN0ZSIsImlhdCI6MTc0NjAzMDQ5MiwiZXhwIjoxNzQ2MTE2ODkyfQ.dVgP5GH0Iz0s040f5sRBhWr80x_c89pqRwAUkBpSqKo
+@token = seu_token
 
 ###
 
@@ -18,7 +18,7 @@ Authorization: Bearer {{token}}
 
 {
     "event": "appointment-created",
-    "appointmentId": "1"
+    "appointmentId": "2"
 }
 
 ###
@@ -29,7 +29,7 @@ Authorization: Bearer {{token}}
 
 {
     "event": "confirm-appointment",
-    "appointmentId": "1"
+    "appointmentId": "2"
 }
 
 ###
@@ -42,7 +42,7 @@ Authorization: Bearer {{token}}
 
 {
     "event": "collect-feedback",
-    "appointmentId": "1"
+    "appointmentId": "2"
 }
 
 ###

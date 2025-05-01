@@ -22,7 +22,10 @@ export class MessageWorkerService {
       if (this.configService.get('NODE_ENV') === 'test') {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         console.log('Msg sent to Twilio! (mock)');
-        await this.loggingService.messageSent({ id: data.eventId, sid: 'mock' });
+        await this.loggingService.messageSent({
+          id: data.eventId,
+          sid: 'mock',
+        });
         return;
       }
 

@@ -15,15 +15,15 @@ export class MessageReceivedUseCase {
     private readonly feedbackRepository: FeedbackRepository,
     private readonly loggingService: LoggingService,
     private readonly queueClient: QueueClient,
-  ) { }
+  ) {}
 
   async execute(data: ReceivedMessageDto): Promise<void> {
     try {
       console.log('Message received', data);
 
       const contactNumber = data.From.slice(12);
-      const lastAction = await this.loggingService
-        .getLastLogByContactInfo(contactNumber);
+      const lastAction =
+        await this.loggingService.getLastLogByContactInfo(contactNumber);
 
       let contextType: ContextOptions;
       let responseMsg: string;
@@ -52,14 +52,9 @@ export class MessageReceivedUseCase {
 
         await this.queueClient.emit(
           InternalContextOptions.SEND_MESSAGE,
-          new MessageDataDto(
-            responseMsg,
-            contactNumber,
-            data.eventId,
-          ),
+          new MessageDataDto(responseMsg, contactNumber, data.eventId),
         );
       }
-
     } catch (error) {
       console.log(error);
       await this.loggingService.eventProcessed({
@@ -69,7 +64,10 @@ export class MessageReceivedUseCase {
     }
   }
 
-  async collectFeedbackResponse(lastContext: LogDto, data: ReceivedMessageDto): Promise<string> {
+  async collectFeedbackResponse(
+    lastContext: LogDto,
+    data: ReceivedMessageDto,
+  ): Promise<string> {
     const userRating = data.Body;
 
     const isValid = this.collectFeedbackResponseValidator(userRating);
@@ -81,12 +79,15 @@ export class MessageReceivedUseCase {
       appointmentId: lastContext.appointmentId,
       type: FeedbackType.APPOINTMENT_FEEDBACK,
       rating: parseInt(userRating),
-    } as Feedback)
+    } as Feedback);
 
-    return 'Obrigado pela avaliação.'
+    return 'Obrigado pela avaliação.';
   }
 
-  async confirmAppointmentResponse(lastContext: LogDto, data: ReceivedMessageDto): Promise<string> {
+  async confirmAppointmentResponse(
+    lastContext: LogDto,
+    data: ReceivedMessageDto,
+  ): Promise<string> {
     const userResponse = data.Body.toLowerCase();
 
     const isValid = this.confirmAppointmentResponseValidator(userResponse);
@@ -95,12 +96,16 @@ export class MessageReceivedUseCase {
     }
 
     if (this.isPositive(userResponse)) {
-      await this.appointmentRepository.confirmAppointmentById(lastContext.appointmentId)
-      return 'Seu agendamento foi confirmado. Obrigado!'
+      await this.appointmentRepository.confirmAppointmentById(
+        lastContext.appointmentId,
+      );
+      return 'Seu agendamento foi confirmado. Obrigado!';
     }
-    
-    await this.appointmentRepository.cancelAppointmentById(lastContext.appointmentId)
-    return 'Seu agendamento foi cancelado. Obrigado! \nCaso tenha cancelado por engano, entre em contato no 0500.'
+
+    await this.appointmentRepository.cancelAppointmentById(
+      lastContext.appointmentId,
+    );
+    return 'Seu agendamento foi cancelado. Obrigado! \nCaso tenha cancelado por engano, entre em contato no 0500.';
   }
 
   collectFeedbackResponseValidator(input: string): boolean {

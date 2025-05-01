@@ -25,8 +25,7 @@ export class ConfirmAppointmentUseCase {
         throw new Error('Agendamento não encontrado.');
       }
 
-      const textPrompt = 
-        `Generate a short, natural-sounding WhatsApp message in Portuguese, askink the patient if they want to confirm the tomorrow appointment with Sim or Não. 
+      const textPrompt = `Generate a short, natural-sounding WhatsApp message in Portuguese, askink the patient if they want to confirm the tomorrow appointment with Sim or Não. 
         
         Use the following details:
         - Patient's first name: ${appointment.Patient.name}
@@ -37,9 +36,10 @@ export class ConfirmAppointmentUseCase {
         The message should be friendly yet professional and must not contain sensitive or personal data.
         Let the patient know that they can reach out if they need to reschedule or have any questions.
 
-        End the message with the contact number for assistance (0500).`
+        End the message with the contact number for assistance (0500).`;
 
-      const generatedMessage = await this.generativeAI.generateContent(textPrompt);
+      const generatedMessage =
+        await this.generativeAI.generateContent(textPrompt);
 
       await this.loggingService.eventProcessed({
         id: data.eventId,

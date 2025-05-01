@@ -9,5 +9,4 @@ export class FeedbackRepositoryPrisma implements FeedbackRepositoryInterface {
     const feedbackCreated = await this.prisma.feedback.create({ data });
     return feedbackCreated.id;
   }
-
 }
