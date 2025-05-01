@@ -125,7 +125,7 @@ export class LoggingService {
       };
 
       if (msgError) {
-        logToUpdate.msg_error = msgError;
+        logToUpdate.msgError = msgError;
         logToUpdate.type = LogType.ERROR;
       }
 

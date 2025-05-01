@@ -6,10 +6,12 @@ import { LogDto, MessageDataDto, ReceivedMessageDto } from '@app/shared/dtos';
 import { FeedbackRepository } from '../../infrastructure/repositories/feedback.repository';
 import { FeedbackType } from '@app/shared/enums/feedback-type.enum';
 import { Feedback } from '@prisma/client';
+import { AppointmentRepository } from '../../infrastructure/repositories/appointment.repository';
 
 @Injectable()
 export class MessageReceivedUseCase {
   constructor(
+    private readonly appointmentRepository: AppointmentRepository,
     private readonly feedbackRepository: FeedbackRepository,
     private readonly loggingService: LoggingService,
     private readonly queueClient: QueueClient,
@@ -30,6 +32,13 @@ export class MessageReceivedUseCase {
           contextType = ContextOptions.COLLECT_FEEDBACK;
           responseMsg = await this.collectFeedbackResponse(lastAction, data);
           break;
+        case ContextOptions.APPOINTMENT_CREATED:
+          contextType = ContextOptions.APPOINTMENT_CREATED;
+          break;
+        case ContextOptions.CONFIRM_APPOINTMENT:
+          contextType = ContextOptions.CONFIRM_APPOINTMENT;
+          responseMsg = await this.confirmAppointmentResponse(lastAction, data);
+          break;
         default:
           throw new Error('Invalid context type');
       }
@@ -40,7 +49,7 @@ export class MessageReceivedUseCase {
           contextType,
           appointmentId: lastAction.appointmentId,
         });
-  
+
         await this.queueClient.emit(
           InternalContextOptions.SEND_MESSAGE,
           new MessageDataDto(
@@ -63,11 +72,11 @@ export class MessageReceivedUseCase {
   async collectFeedbackResponse(lastContext: LogDto, data: ReceivedMessageDto): Promise<string> {
     const userRating = data.Body;
 
-    const isValid = this.inputValidator(userRating);
+    const isValid = this.collectFeedbackResponseValidator(userRating);
     if (!isValid) {
       return 'Sua nota deve ser entre 0 e 5. Por favor, envie um valor válido.';
     }
-    
+
     await this.feedbackRepository.create({
       appointmentId: lastContext.appointmentId,
       type: FeedbackType.APPOINTMENT_FEEDBACK,
@@ -77,8 +86,32 @@ export class MessageReceivedUseCase {
     return 'Obrigado pela avaliação.'
   }
 
-  inputValidator(input: string): boolean {
+  async confirmAppointmentResponse(lastContext: LogDto, data: ReceivedMessageDto): Promise<string> {
+    const userResponse = data.Body.toLowerCase();
+
+    const isValid = this.confirmAppointmentResponseValidator(userResponse);
+    if (!isValid) {
+      return 'Por favor, responda apenas com sim ou não. \nEm caso de dúvidas, entre em contato no 0500.';
+    }
+
+    if (this.isPositive(userResponse)) {
+      await this.appointmentRepository.confirmAppointmentById(lastContext.appointmentId)
+      return 'Seu agendamento foi confirmado. Obrigado!'
+    }
+    
+    await this.appointmentRepository.cancelAppointmentById(lastContext.appointmentId)
+    return 'Seu agendamento foi cancelado. Obrigado! \nCaso tenha cancelado por engano, entre em contato no 0500.'
+  }
+
+  collectFeedbackResponseValidator(input: string): boolean {
     return ['0', '1', '2', '3', '4', '5'].includes(input);
   }
 
+  confirmAppointmentResponseValidator(input: string): boolean {
+    return ['sim', 'não', 'nao', 's', 'n', 'yes', 'no'].includes(input);
+  }
+
+  isPositive(input: string): boolean {
+    return ['sim', 's', 'yes'].includes(input.toLowerCase());
+  }
 }

@@ -26,17 +26,18 @@ export class ConfirmAppointmentUseCase {
       }
 
       const textPrompt = 
-        `Generate a short, natural-sounding WhatsApp message in Portuguese, confirming that the patient's appointment has been successfully confirmed. The message should be friendly yet professional and must not contain sensitive or personal data.
-
+        `Generate a short, natural-sounding WhatsApp message in Portuguese, askink the patient if they want to confirm the tomorrow appointment with Sim or Não. 
+        
         Use the following details:
         - Patient's first name: ${appointment.Patient.name}
         - Appointment date and time: ${appointment.date_time}
         - Patient's gender: ${appointment.Patient.gender} (use this to make the message more natural)
-        - Patient's age: ${appointment.Patient.age}
+        - Patient's age: ${appointment.Patient.age} 
+        
+        The message should be friendly yet professional and must not contain sensitive or personal data.
+        Let the patient know that they can reach out if they need to reschedule or have any questions.
 
-        Let the patient know that their appointment is confirmed and that they can reach out if they need to reschedule or have any questions.
-
-        End the message with the contact number for assistance: 19998682834.`
+        End the message with the contact number for assistance (0500).`
 
       const generatedMessage = await this.generativeAI.generateContent(textPrompt);
 

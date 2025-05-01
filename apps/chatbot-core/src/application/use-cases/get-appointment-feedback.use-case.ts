@@ -26,14 +26,15 @@ export class GetAppointmentFeedbackUseCase {
       }
 
       const textPrompt = 
-        `Generate a short, natural-sounding WhatsApp message in Portuguese asking the people how much they like the consultation from 0 to 5. The message should be friendly yet professional and must not contain sensitive or personal data.
-
+        `Generate a short, natural-sounding WhatsApp message in Portuguese asking the people how much they like the consultation from 0 to 5. 
+        
         Use the following details:
         - Patient's first name: ${appointment.Patient.name}
         - Appointment date and time: ${appointment.date_time}
         - Patient's gender: ${appointment.Patient.gender} (use this to make the message more natural)
         - Patient's age: ${appointment.Patient.age}
-        `
+        
+        The message should be friendly yet professional and must not contain sensitive or personal data.`;
 
       const generatedMessage = await this.generativeAI.generateContent(textPrompt);
 

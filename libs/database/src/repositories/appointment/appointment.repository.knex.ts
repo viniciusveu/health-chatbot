@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppointmentRepositoryInterface } from './appointment.repository.interface';
 import { KnexService } from '../../knex.service';
+import { AppointmentStatus } from '@app/shared/enums';
 
 @Injectable()
 export class AppointmentRepositoryKnex
@@ -14,4 +15,12 @@ export class AppointmentRepositoryKnex
       .where({ id: appointmentId })
       .first();
   }
+
+  async changeStatusById(appointmentId: number, status: AppointmentStatus): Promise<any> {
+    return await this.knexService
+      .db('appointments')
+      .where({ id: appointmentId })
+      .update({ status });
+  }
+    
 }
