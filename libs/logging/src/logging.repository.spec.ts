@@ -13,10 +13,13 @@ describe('LoggingRepository', () => {
     mockLoggingRepository = {
       create: jest.fn(),
       update: jest.fn(),
+      findByContactInfo: jest.fn(),
     };
 
     const mockRepositoryFactory = {
-      getLogginRepository: () => mockLoggingRepository,
+      getLoggingRepository: () => mockLoggingRepository,
+      getAppointmentRepository: () => ({}),
+      getFeedbackRepository: () => ({}),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -64,4 +67,17 @@ describe('LoggingRepository', () => {
       expect(mockLoggingRepository.update).toHaveBeenCalledWith(id, data);
     });
   });
+
+  describe('findByContactInfo', () => {
+    it('should call the repository findByContactInfo method', async () => {
+      const contactInfo = '123456789';
+      (mockLoggingRepository.findByContactInfo as jest.Mock).mockResolvedValue(undefined);
+
+      await repository.findByContactInfo(contactInfo);
+
+      expect(mockLoggingRepository.findByContactInfo).toHaveBeenCalledWith(contactInfo);
+    });
+  });
+
+      
 });

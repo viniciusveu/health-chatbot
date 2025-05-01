@@ -130,7 +130,7 @@ describe('ConfirmAppointmentUseCase', () => {
         expect.stringContaining(mockAppointment.date_time.toString()),
       );
       expect(mockGenerativeAI.generateContent).toHaveBeenCalledWith(
-        expect.stringContaining('successfully confirmed'), // Check for confirmation intent in prompt
+        expect.stringContaining('want to confirm'), // Check for confirmation intent in prompt
       );
 
       // 3. Check logging call (success)

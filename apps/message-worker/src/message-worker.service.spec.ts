@@ -6,6 +6,7 @@ import { TwilioService } from './twilio.service';
 import { MessageDataDto } from '@app/shared/dtos';
 import { InternalContextOptions } from '@app/shared/enums';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 // Mock implementations for dependencies
 const mockLoggingService = {
@@ -21,6 +22,10 @@ const mockTwilioService = {
   sendWhatsappMessage: jest.fn(),
 };
 
+const mockConfigService = {
+  get: jest.fn(),
+};
+
 // Mock Logger methods if needed (e.g., for the warning in receiveMessage)
 jest.spyOn(Logger, 'log').mockImplementation(() => {});
 jest.spyOn(Logger, 'warn').mockImplementation(() => {});
@@ -34,6 +39,7 @@ describe('MessageWorkerService', () => {
   let loggingService: LoggingService;
   let queueClient: QueueClient;
   let twilioService: TwilioService;
+  let configService: ConfigService;
 
   beforeEach(async () => {
     // Reset mocks before each test
@@ -45,6 +51,7 @@ describe('MessageWorkerService', () => {
         { provide: LoggingService, useValue: mockLoggingService },
         { provide: QueueClient, useValue: mockQueueClient },
         { provide: TwilioService, useValue: mockTwilioService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
@@ -52,6 +59,7 @@ describe('MessageWorkerService', () => {
     loggingService = module.get<LoggingService>(LoggingService);
     queueClient = module.get<QueueClient>(QueueClient);
     twilioService = module.get<TwilioService>(TwilioService);
+    configService = module.get<ConfigService>(ConfigService);
   });
 
   it('should be defined', () => {
@@ -73,6 +81,7 @@ describe('MessageWorkerService', () => {
       // Arrange
       mockTwilioService.sendWhatsappMessage.mockResolvedValueOnce(mockSid);
       mockLoggingService.messageSent.mockResolvedValueOnce(undefined); // Simulates successful logging
+      mockConfigService.get.mockReturnValueOnce('dev');
 
       // Act
       await service.sendMessage(testData);

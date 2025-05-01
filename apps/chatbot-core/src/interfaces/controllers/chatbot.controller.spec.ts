@@ -5,6 +5,7 @@ import { AppointmentCreatedUseCase } from '../../application/use-cases/appointme
 import { MessageReceivedUseCase } from '../../application/use-cases/message-received.use-case';
 import { EventDataDto, ReceivedMessageDto } from '@app/shared/dtos';
 import { ContextOptions } from '@app/shared/enums';
+import { GetAppointmentFeedbackUseCase } from '../../application/use-cases/get-appointment-feedback.use-case';
 
 describe('ChatbotController', () => {
   let chatbotController: ChatbotController;
@@ -12,6 +13,7 @@ describe('ChatbotController', () => {
   let confirmAppointmentUseCase: ConfirmAppointmentUseCase;
   let appointmentCreatedUseCase: AppointmentCreatedUseCase;
   let messageReceivedUseCase: MessageReceivedUseCase;
+  let getAppointmentFeedbackUseCase: GetAppointmentFeedbackUseCase;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -35,6 +37,12 @@ describe('ChatbotController', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: GetAppointmentFeedbackUseCase,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -48,6 +56,9 @@ describe('ChatbotController', () => {
     messageReceivedUseCase = app.get<MessageReceivedUseCase>(
       MessageReceivedUseCase,
     );
+    getAppointmentFeedbackUseCase = app.get<GetAppointmentFeedbackUseCase>(
+      GetAppointmentFeedbackUseCase,
+    );
   });
 
   describe('it must be defined', () => {
@@ -56,6 +67,7 @@ describe('ChatbotController', () => {
       expect(confirmAppointmentUseCase).toBeDefined();
       expect(appointmentCreatedUseCase).toBeDefined();
       expect(messageReceivedUseCase).toBeDefined();
+      expect(getAppointmentFeedbackUseCase).toBeDefined();
     });
   });
 
@@ -92,4 +104,16 @@ describe('ChatbotController', () => {
       expect(confirmAppointmentUseCase.execute).toHaveBeenCalledWith(message);
     });
   });
+
+  describe('getAppointmentFeedback', () => {
+    it('should call getAppointmentFeedbackUseCase.execute with the correct message', async () => {
+      const message: EventDataDto = {
+        event: ContextOptions.COLLECT_FEEDBACK,
+        appointmentId: 'some id',
+      };
+      await chatbotController.getAppointmentFeedback(message);
+      expect(getAppointmentFeedbackUseCase.execute).toHaveBeenCalledWith(message);
+    });
+  });
+  
 });
