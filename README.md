@@ -1,6 +1,6 @@
 ![Node.js](https://img.shields.io/badge/Node.js-22.x-green)
 ![NestJS](https://img.shields.io/badge/NestJS-Framework-red)
-![Status](https://img.shields.io/badge/status-em%20testes-blue)
+![Status](https://img.shields.io/badge/build-passing-green)
 
 # 🏥 Health Chatbot
 
